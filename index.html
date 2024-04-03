@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+	<!-- font embeds -->
+	<link rel="stylesheet" href="https://use.typekit.net/kpv3ypy.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+	<style>
+	* {
+    	margin: 0;
+    	padding: 0;
+    	box-sizing: border-box;
+    	border: none;
+	}
+	body {
+		margin: 0;
+		padding: 0;
+		background-color: #FCFCFC;
+		font-family: "IBM Plex Sans", sans-serif;
+	}
+	.main-content {
+		width: 100%;
+		min-height: 68vh;
+	}
+	.page-content {
+		width: 100%;
+		max-width: 1364px;
+		margin: 40px auto 0 auto;
+		display: flex;
+		justify-content: space-between;
+	}
+	.page-content .body {
+    	width: calc(100% - 340px);
+	}
+	.left-sidebar {
+		width: 100%;
+		max-width: 290px;
+		position: relative;
+		z-index: 10;
+	}
+	h1, h2, h3, h4, h5, h6 {
+		font-family: "Mokoko", serif;
+		font-weight: 500;
+	}
+	h1, .h1-like {
+		margin: 0 0 25px 0;
+		font-size: 39px;
+		line-height: 45px;
+		display: inline-block;
+		position: relative;
+	}
+	h1:after, .h1-like:after {
+		content: "";
+		width: 22px;
+		height: 34px;
+		background: url('/assets/images/madpl-odeck-header-exclamation-mark.svg') no-repeat center;
+		background-size: cover;
+		display: block;
+		position: absolute;
+		bottom: 7px;
+		right: -23px;
+	}
+	h2, .h2-like {
+		margin: 0 0 25px 0;
+		font-size: 28px;
+		line-height: 36px;
+	}
+	h3, .h3-like {
+		margin: 0 0 25px 0;
+		font-size: 23px;
+		line-height: 27px;
+	}
+	h4, .h4-like {
+		margin: 0 0 25px 0;
+		font-size: 19px;
+		line-height: 24px;
+	}
+
+	p {
+		margin: 25px 0;
+		color: #222;
+		font-size: 18px;
+		line-height: 26px;
+	}
+	p.intro {
+		margin: 0 0 36px 0;
+		opacity: 0.6;
+		font-family: "Mokoko", serif;
+	}
+	a {
+		color: #06718A;
+		transition: color .3s;
+	}
+	a[href*="//"]:not(.skip-offsite):not([href*="odeck.stage.diedrick.com"]):after {
+		content: url('/icon_offsite-link.svg');
+		margin-left: 3px;
+	}
+	header {
+		width: 100%;
+		padding: 40px;
+		background-color: #FFF;
+		border-bottom: 1px solid #DCDCDC;
+		position: relative;
+	}
+	header .header-wrapper {
+		width: 100%;
+		max-width: 1440px;
+		margin: 0 auto;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.main-navigation {
+		padding-top: 20px;
+		display: flex;
+		align-items: center;
+	}
+	.main-navigation ul {
+		width: 100%;
+		margin: 0;
+		list-style-type: none;
+		display: flex;
+		gap: 0 22px;
+		align-items: center;
+		justify-content: flex-end;
+	}
+	.main-navigation ul li {
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0 3px;
+		align-items: center;
+		position: relative;
+		--od-nav-item-color: #00AFFF;
+	}
+	.main-navigation ul li a.item-link {
+		color: #000;
+		font-family: "Mokoko", serif;
+		font-size: 14px;
+		font-weight: 500;
+		line-height: 21px;
+		letter-spacing: 0.5px;
+		text-decoration: none;
+		position: relative;
+	}
+	</style>
+
+	<header id="header" data-embed="Header: whole area">
+		<div class="header-wrapper" data-embed="Header: grid">
+			<!-- site-logo -->
+			<a href="/" class="site-logo" aria-label="This link will send you back to the home page Observation Deck by Madison Public Library">
+				<img src="/madpl-odeck-site-logo.png" width="319" height="78" alt="Site Logo for the Observation Deck by Madison Public Library">
+			</a>
+
+			<a href="#" class="ham-menu tablet" onclick="toggleNav(); return false;"><span class="line"></span><span class="line"></span><span class="line"></span></a>
+
+			<!-- main-navigation -->
+			<nav id="main_navigation" class="main-navigation">
+				<ul>
+					<!--<li class="nav-item" data-id="7">
+						<a href="https://observationdeck.stage.diedrick.com/" class="item-link">Main Website</a>
+					</li>-->
+					<li class="nav-item" data-id="8">
+						<a href="/observer/" class="item-link">Observer Tool</a>
+					</li>
+					<li class="nav-item" data-id="9">
+						<a href="/reporter/" class="item-link">Reporting Tool</a>
+					</li>
+					<li class="nav-item" data-id="9">
+						<a href="https://github.com/bytestudios/observationdeck" class="item-link">Github</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+	<section class="main-content secondary">
+
+		<div class="page-content">
+			<div id="left_sidebar" class="left-sidebar">
+			</div>
+			<div class="body">
+
+				<h1>Observation Deck Open Source Project Home</h1>
+				<p>Observation deck had 3 tools, an observation tool, a reporting tool and an adminitration tool.</p>
+				<p><a href="/observer/">Go to the observation system</a>, or go to the <a href="/reporter/">reporting system</a>.</p>
+			</div>
+	
+		</div>
+	</div>
+</body>
+</html>
