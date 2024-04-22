@@ -76,13 +76,18 @@ GRANT ALL ON `directus`.* to 'directus'@'localhost';
 
 ### Setting up Nginx:
 
+Add some directories:
 ```
 mkdir /var/www/vhosts/
 mkdir /var/www/vhosts/odeck.yoursite.org
-mkdir /var/www/vhosts/odeck.yoursite.org/htdocs
-mkdir /var/www/vhosts/odeck.yoursite.org/htdocs/home
-nano /var/www/vhosts/odeck.yoursite.org/htdocs/home/index.html (add ‘<h1>Hello</h1>’)
 mkdir /var/www/vhosts/odeck.yoursite.org/logs
+```
+Then get a copy of this repository as the root of your website:
+```
+git clone https://github.com/bytestudios/observation-deck.git htdocs/
+```
+And add server instructions for Nginx
+```
 nano /etc/nginx/sites-available/odeck.yoursite.org
 ```
 And inside Nano, add:
@@ -97,6 +102,15 @@ server {
     error_log /var/www/vhosts/odeck.yoursite.org/logs/error_log;
 
     location /home {
+        try_files $uri $uri/ =404;
+    }
+    location /reporter {
+        try_files $uri $uri/ =404;
+    }
+    location /observer {
+        try_files $uri $uri/ =404;
+    }
+    location /config.js {
         try_files $uri $uri/ =404;
     }
 
