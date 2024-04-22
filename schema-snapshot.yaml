@@ -1,0 +1,4499 @@
+version: 1
+directus: 14.1.2
+vendor: mysql
+collections:
+  - collection: Dimensions
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      collapse: open
+      collection: Dimensions
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      translations: null
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: Dimensions
+  - collection: Frameworks
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      collapse: open
+      collection: Frameworks
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      translations: null
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: Frameworks
+  - collection: Indicators
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      collapse: open
+      collection: Indicators
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations: null
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: Indicators
+  - collection: Institutions
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      collapse: open
+      collection: Institutions
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations: null
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: Institutions
+  - collection: Locations
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      collapse: open
+      collection: Locations
+      color: null
+      display_template: '{{name}}{{institution_id.Name}}'
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations: null
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: Locations
+  - collection: Observations
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      collapse: open
+      collection: Observations
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: Observations
+  - collection: Partners
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      collapse: open
+      collection: Partners
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations: null
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: Partners
+  - collection: Sessions
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      collapse: open
+      collection: Sessions
+      color: null
+      display_template: null
+      group: null
+      hidden: false
+      icon: null
+      item_duplication_fields: null
+      note: null
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: null
+      translations: null
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: Sessions
+fields:
+  - collection: Dimensions
+    field: Framework
+    type: integer
+    meta:
+      collection: Dimensions
+      conditions: null
+      display: null
+      display_options: null
+      field: Framework
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{id}}: {{name}}'
+      readonly: false
+      required: false
+      sort: 4
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: Framework
+      table: Dimensions
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Frameworks
+      foreign_key_column: id
+  - collection: Dimensions
+    field: Indicators
+    type: alias
+    meta:
+      collection: Dimensions
+      field: Indicators
+      special:
+        - o2m
+      interface: list-o2m
+      options:
+        template: '{{id}}: {{name}}'
+      display: null
+      display_options: null
+      readonly: false
+      hidden: false
+      sort: 11
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+      validation: null
+      validation_message: null
+  - collection: Dimensions
+    field: color
+    type: string
+    meta:
+      collection: Dimensions
+      conditions: null
+      display: null
+      display_options: null
+      field: color
+      group: null
+      hidden: false
+      interface: select-color
+      note: null
+      options:
+        presets:
+          - name: YG1
+            color: '#548200'
+          - name: YG2
+            color: '#FFEB08'
+          - name: YG3
+            color: '#FFBD00'
+          - name: YG4
+            color: '#96CA14'
+          - name: YG5
+            color: '#285606'
+          - name: BP1
+            color: '#0000B8'
+          - name: BP2
+            color: '#027FFE'
+          - name: BP3
+            color: '#800080'
+          - name: BP4
+            color: '#7851A9'
+          - name: BP5
+            color: '#7C00C3'
+          - name: OR1
+            color: '#69140E'
+          - name: OR2
+            color: '#FF6517'
+          - name: OR3
+            color: '#FFB505'
+          - name: OR4
+            color: '#C4041E'
+          - name: OR5
+            color: '#FF9100'
+      readonly: false
+      required: true
+      sort: 6
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: color
+      table: Dimensions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Dimensions
+    field: date_created
+    type: timestamp
+    meta:
+      collection: Dimensions
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 10
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: Dimensions
+      data_type: timestamp
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Dimensions
+    field: framework_id
+    type: integer
+    meta:
+      collection: Dimensions
+      conditions: null
+      display: related-values
+      display_options:
+        template: '{{name}}'
+      field: framework_id
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{name}}'
+      readonly: false
+      required: false
+      sort: 3
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: framework_id
+      table: Dimensions
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Frameworks
+      foreign_key_column: id
+  - collection: Dimensions
+    field: id
+    type: integer
+    meta:
+      collection: Dimensions
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: Dimensions
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Dimensions
+    field: is_public
+    type: boolean
+    meta:
+      collection: Dimensions
+      conditions: null
+      display: null
+      display_options: null
+      field: is_public
+      group: null
+      hidden: false
+      interface: boolean
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 7
+      special:
+        - cast-boolean
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: is_public
+      table: Dimensions
+      data_type: boolean
+      default_value: false
+      max_length: null
+      numeric_precision: 3
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Dimensions
+    field: name
+    type: string
+    meta:
+      collection: Dimensions
+      conditions: null
+      display: null
+      display_options: null
+      field: name
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: name
+      table: Dimensions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Dimensions
+    field: sort
+    type: integer
+    meta:
+      collection: Dimensions
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 8
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: sort
+      table: Dimensions
+      data_type: int
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Dimensions
+    field: status
+    type: string
+    meta:
+      collection: Dimensions
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - text: $t:published
+            value: published
+            background: var(--primary)
+            foreground: '#FFFFFF'
+          - text: $t:draft
+            value: draft
+            background: '#D3DAE4'
+            foreground: '#18222F'
+          - text: $t:archived
+            value: archived
+            background: var(--warning)
+            foreground: '#FFFFFF'
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: $t:published
+            value: published
+          - text: $t:draft
+            value: draft
+          - text: $t:archived
+            value: archived
+      readonly: false
+      required: false
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: status
+      table: Dimensions
+      data_type: varchar
+      default_value: published
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Dimensions
+    field: user_created
+    type: string
+    meta:
+      collection: Dimensions
+      conditions: null
+      display: user
+      display_options: null
+      field: user_created
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
+      readonly: true
+      required: false
+      sort: 9
+      special:
+        - user-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: user_created
+      table: Dimensions
+      data_type: char
+      default_value: null
+      max_length: 36
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_users
+      foreign_key_column: id
+  - collection: Frameworks
+    field: Dimensions
+    type: alias
+    meta:
+      collection: Frameworks
+      field: Dimensions
+      special:
+        - o2m
+      interface: list-o2m
+      options: null
+      display: null
+      display_options: null
+      readonly: false
+      hidden: false
+      sort: null
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+      validation: null
+      validation_message: null
+  - collection: Frameworks
+    field: date_created
+    type: timestamp
+    meta:
+      collection: Frameworks
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 9
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: Frameworks
+      data_type: timestamp
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Frameworks
+    field: description
+    type: text
+    meta:
+      collection: Frameworks
+      conditions: null
+      display: null
+      display_options: null
+      field: description
+      group: null
+      hidden: false
+      interface: input-rich-text-html
+      note: null
+      options:
+        toolbar:
+          - bold
+          - bullist
+          - code
+          - copy
+          - customLink
+          - fullscreen
+          - italic
+          - numlist
+          - paste
+          - removeformat
+          - underline
+      readonly: false
+      required: false
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: description
+      table: Frameworks
+      data_type: text
+      default_value: null
+      max_length: 65535
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Frameworks
+    field: id
+    type: integer
+    meta:
+      collection: Frameworks
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: Frameworks
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Frameworks
+    field: institution
+    type: integer
+    meta:
+      collection: Frameworks
+      conditions: null
+      display: related-values
+      display_options:
+        template: '{{Name}}'
+      field: institution
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{Name}}'
+      readonly: false
+      required: true
+      sort: 2
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: institution
+      table: Frameworks
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Institutions
+      foreign_key_column: id
+  - collection: Frameworks
+    field: is_public
+    type: boolean
+    meta:
+      collection: Frameworks
+      conditions: null
+      display: null
+      display_options: null
+      field: is_public
+      group: null
+      hidden: false
+      interface: boolean
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 5
+      special:
+        - cast-boolean
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: is_public
+      table: Frameworks
+      data_type: boolean
+      default_value: true
+      max_length: null
+      numeric_precision: 3
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Frameworks
+    field: name
+    type: string
+    meta:
+      collection: Frameworks
+      conditions: null
+      display: null
+      display_options: null
+      field: name
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: name
+      table: Frameworks
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Frameworks
+    field: sort
+    type: integer
+    meta:
+      collection: Frameworks
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 7
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: sort
+      table: Frameworks
+      data_type: int
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Frameworks
+    field: status
+    type: string
+    meta:
+      collection: Frameworks
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - text: $t:published
+            value: published
+            background: var(--primary)
+            foreground: '#FFFFFF'
+          - text: $t:draft
+            value: draft
+            background: '#D3DAE4'
+            foreground: '#18222F'
+          - text: $t:archived
+            value: archived
+            background: var(--warning)
+            foreground: '#FFFFFF'
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: $t:published
+            value: published
+          - text: $t:draft
+            value: draft
+          - text: $t:archived
+            value: archived
+      readonly: false
+      required: false
+      sort: 6
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: status
+      table: Frameworks
+      data_type: varchar
+      default_value: published
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Frameworks
+    field: user_created
+    type: string
+    meta:
+      collection: Frameworks
+      conditions: null
+      display: user
+      display_options: null
+      field: user_created
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
+      readonly: true
+      required: false
+      sort: 8
+      special:
+        - user-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: user_created
+      table: Frameworks
+      data_type: char
+      default_value: null
+      max_length: 36
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_users
+      foreign_key_column: id
+  - collection: Indicators
+    field: Dimension
+    type: integer
+    meta:
+      collection: Indicators
+      conditions: null
+      display: null
+      display_options: null
+      field: Dimension
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{id}}: {{name}}'
+      readonly: false
+      required: false
+      sort: 4
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: Dimension
+      table: Indicators
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Dimensions
+      foreign_key_column: id
+  - collection: Indicators
+    field: date_created
+    type: timestamp
+    meta:
+      collection: Indicators
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 8
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: Indicators
+      data_type: timestamp
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Indicators
+    field: dimension_id
+    type: integer
+    meta:
+      collection: Indicators
+      conditions: null
+      display: related-values
+      display_options:
+        template: '{{name}}'
+      field: dimension_id
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{name}}'
+      readonly: false
+      required: true
+      sort: 3
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: dimension_id
+      table: Indicators
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Dimensions
+      foreign_key_column: id
+  - collection: Indicators
+    field: id
+    type: integer
+    meta:
+      collection: Indicators
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: Indicators
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Indicators
+    field: is_public
+    type: boolean
+    meta:
+      collection: Indicators
+      conditions: null
+      display: null
+      display_options: null
+      field: is_public
+      group: null
+      hidden: false
+      interface: boolean
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 5
+      special:
+        - cast-boolean
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: is_public
+      table: Indicators
+      data_type: boolean
+      default_value: false
+      max_length: null
+      numeric_precision: 3
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Indicators
+    field: name
+    type: string
+    meta:
+      collection: Indicators
+      conditions: null
+      display: null
+      display_options: null
+      field: name
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: name
+      table: Indicators
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Indicators
+    field: status
+    type: string
+    meta:
+      collection: Indicators
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - text: $t:published
+            value: published
+            background: var(--primary)
+            foreground: '#FFFFFF'
+          - text: $t:draft
+            value: draft
+            background: '#D3DAE4'
+            foreground: '#18222F'
+          - text: $t:archived
+            value: archived
+            background: var(--warning)
+            foreground: '#FFFFFF'
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: $t:published
+            value: published
+          - text: $t:draft
+            value: draft
+          - text: $t:archived
+            value: archived
+      readonly: false
+      required: false
+      sort: 6
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: status
+      table: Indicators
+      data_type: varchar
+      default_value: published
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Indicators
+    field: user_created
+    type: string
+    meta:
+      collection: Indicators
+      conditions: null
+      display: user
+      display_options: null
+      field: user_created
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
+      readonly: true
+      required: false
+      sort: 7
+      special:
+        - user-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: user_created
+      table: Indicators
+      data_type: char
+      default_value: null
+      max_length: 36
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_users
+      foreign_key_column: id
+  - collection: Institutions
+    field: Name
+    type: string
+    meta:
+      collection: Institutions
+      conditions: null
+      display: null
+      display_options: null
+      field: Name
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: Name
+      table: Institutions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Institutions
+    field: id
+    type: integer
+    meta:
+      collection: Institutions
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: Institutions
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Institutions
+    field: session_slider_1_label_high
+    type: string
+    meta:
+      collection: Institutions
+      conditions: null
+      display: null
+      display_options: null
+      field: session_slider_1_label_high
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        softLength: 15
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: session_slider_1_label_high
+      table: Institutions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Institutions
+    field: session_slider_1_label_low
+    type: string
+    meta:
+      collection: Institutions
+      conditions: null
+      display: null
+      display_options: null
+      field: session_slider_1_label_low
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        softLength: 15
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: session_slider_1_label_low
+      table: Institutions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Institutions
+    field: session_slider_1_label_medium
+    type: string
+    meta:
+      collection: Institutions
+      conditions: null
+      display: null
+      display_options: null
+      field: session_slider_1_label_medium
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        softLength: 15
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: session_slider_1_label_medium
+      table: Institutions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Institutions
+    field: session_slider_1_question
+    type: string
+    meta:
+      collection: Institutions
+      conditions: null
+      display: null
+      display_options: null
+      field: session_slider_1_question
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: session_slider_1_question
+      table: Institutions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Institutions
+    field: session_slider_2_label_high
+    type: string
+    meta:
+      collection: Institutions
+      conditions: null
+      display: null
+      display_options: null
+      field: session_slider_2_label_high
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        softLength: 15
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: session_slider_2_label_high
+      table: Institutions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Institutions
+    field: session_slider_2_label_low
+    type: string
+    meta:
+      collection: Institutions
+      conditions: null
+      display: null
+      display_options: null
+      field: session_slider_2_label_low
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        softLength: 15
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: session_slider_2_label_low
+      table: Institutions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Institutions
+    field: session_slider_2_label_medium
+    type: string
+    meta:
+      collection: Institutions
+      conditions: null
+      display: null
+      display_options: null
+      field: session_slider_2_label_medium
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        softLength: 15
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: session_slider_2_label_medium
+      table: Institutions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Institutions
+    field: session_slider_2_question
+    type: string
+    meta:
+      collection: Institutions
+      conditions: null
+      display: null
+      display_options: null
+      field: session_slider_2_question
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: session_slider_2_question
+      table: Institutions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Institutions
+    field: session_slider_3_label_high
+    type: string
+    meta:
+      collection: Institutions
+      conditions: null
+      display: null
+      display_options: null
+      field: session_slider_3_label_high
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        softLength: 15
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: session_slider_3_label_high
+      table: Institutions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Institutions
+    field: session_slider_3_label_low
+    type: string
+    meta:
+      collection: Institutions
+      conditions: null
+      display: null
+      display_options: null
+      field: session_slider_3_label_low
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        softLength: 15
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: session_slider_3_label_low
+      table: Institutions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Institutions
+    field: session_slider_3_label_medium
+    type: string
+    meta:
+      collection: Institutions
+      conditions: null
+      display: null
+      display_options: null
+      field: session_slider_3_label_medium
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        softLength: 15
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: session_slider_3_label_medium
+      table: Institutions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Institutions
+    field: session_slider_3_question
+    type: string
+    meta:
+      collection: Institutions
+      conditions: null
+      display: null
+      display_options: null
+      field: session_slider_3_question
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: session_slider_3_question
+      table: Institutions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Institutions
+    field: status
+    type: string
+    meta:
+      collection: Institutions
+      conditions: null
+      display: null
+      display_options: null
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: Published
+            value: published
+          - text: Draft
+            value: draft
+          - text: Archived
+            value: archived
+      readonly: false
+      required: false
+      sort: null
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: status
+      table: Institutions
+      data_type: varchar
+      default_value: published
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Locations
+    field: date_created
+    type: timestamp
+    meta:
+      collection: Locations
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 8
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: Locations
+      data_type: timestamp
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Locations
+    field: id
+    type: integer
+    meta:
+      collection: Locations
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: Locations
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Locations
+    field: institution_id
+    type: integer
+    meta:
+      collection: Locations
+      conditions: null
+      display: related-values
+      display_options:
+        template: '{{Name}}'
+      field: institution_id
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{Name}}'
+      readonly: false
+      required: true
+      sort: 3
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: institution_id
+      table: Locations
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Institutions
+      foreign_key_column: id
+  - collection: Locations
+    field: name
+    type: string
+    meta:
+      collection: Locations
+      conditions: null
+      display: null
+      display_options: null
+      field: name
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: name
+      table: Locations
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Locations
+    field: status
+    type: string
+    meta:
+      collection: Locations
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - text: $t:published
+            value: published
+            background: var(--primary)
+            foreground: '#FFFFFF'
+          - text: $t:draft
+            value: draft
+            background: '#D3DAE4'
+            foreground: '#18222F'
+          - text: $t:archived
+            value: archived
+            background: var(--warning)
+            foreground: '#FFFFFF'
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: $t:published
+            value: published
+          - text: $t:draft
+            value: draft
+          - text: $t:archived
+            value: archived
+      readonly: false
+      required: false
+      sort: 6
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: status
+      table: Locations
+      data_type: varchar
+      default_value: published
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Locations
+    field: user_created
+    type: string
+    meta:
+      collection: Locations
+      conditions: null
+      display: user
+      display_options: null
+      field: user_created
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
+      readonly: true
+      required: false
+      sort: 7
+      special:
+        - user-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: user_created
+      table: Locations
+      data_type: char
+      default_value: null
+      max_length: 36
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_users
+      foreign_key_column: id
+  - collection: Locations
+    field: user_id
+    type: string
+    meta:
+      collection: Locations
+      conditions: null
+      display: null
+      display_options: null
+      field: user_id
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{first_name}} {{last_name}}'
+      readonly: false
+      required: false
+      sort: 8
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: user_id
+      table: Locations
+      data_type: char
+      default_value: null
+      max_length: 36
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_users
+      foreign_key_column: id
+  - collection: Observations
+    field: Session
+    type: integer
+    meta:
+      collection: Observations
+      conditions: null
+      display: null
+      display_options: null
+      field: Session
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{id}}: {{name}}'
+      readonly: false
+      required: false
+      sort: 3
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: Session
+      table: Observations
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Sessions
+      foreign_key_column: id
+  - collection: Observations
+    field: attendee_code
+    type: string
+    meta:
+      collection: Observations
+      conditions: null
+      display: null
+      display_options: null
+      field: attendee_code
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 7
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: attendee_code
+      table: Observations
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Observations
+    field: date_created
+    type: timestamp
+    meta:
+      collection: Observations
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 12
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: Observations
+      data_type: timestamp
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Observations
+    field: date_updated
+    type: timestamp
+    meta:
+      collection: Observations
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_updated
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 13
+      special:
+        - date-updated
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_updated
+      table: Observations
+      data_type: timestamp
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Observations
+    field: dimension_id
+    type: integer
+    meta:
+      collection: Observations
+      conditions: null
+      display: related-values
+      display_options:
+        template: '{{framework_id.name}}-{{name}}'
+      field: dimension_id
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{framework_id.name}}: {{name}}'
+      readonly: false
+      required: false
+      sort: 8
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: dimension_id
+      table: Observations
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Dimensions
+      foreign_key_column: id
+  - collection: Observations
+    field: id
+    type: integer
+    meta:
+      collection: Observations
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: Observations
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Observations
+    field: image
+    type: uuid
+    meta:
+      collection: Observations
+      conditions: null
+      display: null
+      display_options: null
+      field: image
+      group: null
+      hidden: false
+      interface: file-image
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 6
+      special:
+        - file
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: image
+      table: Observations
+      data_type: char
+      default_value: null
+      max_length: 36
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: Observations
+    field: indicator_id
+    type: integer
+    meta:
+      collection: Observations
+      conditions: null
+      display: related-values
+      display_options:
+        template: '{{name}}'
+      field: indicator_id
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{name}}'
+      readonly: false
+      required: false
+      sort: 9
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: indicator_id
+      table: Observations
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Indicators
+      foreign_key_column: id
+  - collection: Observations
+    field: institution_id
+    type: integer
+    meta:
+      collection: Observations
+      conditions: null
+      display: null
+      display_options: null
+      field: institution_id
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{Name}}'
+      readonly: false
+      required: true
+      sort: 11
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: institution_id
+      table: Observations
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Institutions
+      foreign_key_column: id
+  - collection: Observations
+    field: is_starred
+    type: boolean
+    meta:
+      collection: Observations
+      conditions: null
+      display: null
+      display_options: null
+      field: is_starred
+      group: null
+      hidden: false
+      interface: boolean
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 10
+      special:
+        - cast-boolean
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: is_starred
+      table: Observations
+      data_type: boolean
+      default_value: null
+      max_length: null
+      numeric_precision: 3
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Observations
+    field: note
+    type: text
+    meta:
+      collection: Observations
+      conditions: null
+      display: null
+      display_options: null
+      field: note
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: note
+      table: Observations
+      data_type: text
+      default_value: null
+      max_length: 65535
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Observations
+    field: session_id
+    type: integer
+    meta:
+      collection: Observations
+      conditions: null
+      display: related-values
+      display_options:
+        template: '{{name}}'
+      field: session_id
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{name}}-{{date}}'
+      readonly: false
+      required: false
+      sort: 2
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: session_id
+      table: Observations
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Sessions
+      foreign_key_column: id
+  - collection: Observations
+    field: user_id
+    type: string
+    meta:
+      collection: Observations
+      conditions: null
+      display: null
+      display_options: null
+      field: user_id
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{first_name}} {{last_name}}'
+      readonly: false
+      required: true
+      sort: 4
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: user_id
+      table: Observations
+      data_type: char
+      default_value: null
+      max_length: 36
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_users
+      foreign_key_column: id
+  - collection: Partners
+    field: id
+    type: integer
+    meta:
+      collection: Partners
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: Partners
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Partners
+    field: institution_id
+    type: integer
+    meta:
+      collection: Partners
+      conditions: null
+      display: null
+      display_options: null
+      field: institution_id
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{Name}}'
+      readonly: false
+      required: true
+      sort: 4
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: institution_id
+      table: Partners
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Institutions
+      foreign_key_column: id
+  - collection: Partners
+    field: name
+    type: string
+    meta:
+      collection: Partners
+      conditions: null
+      display: null
+      display_options: null
+      field: name
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: name
+      table: Partners
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Partners
+    field: status
+    type: string
+    meta:
+      collection: Partners
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - text: $t:published
+            value: published
+            background: var(--primary)
+            foreground: '#FFFFFF'
+          - text: $t:draft
+            value: draft
+            background: '#D3DAE4'
+            foreground: '#18222F'
+          - text: $t:archived
+            value: archived
+            background: var(--warning)
+            foreground: '#FFFFFF'
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: $t:published
+            value: published
+          - text: $t:draft
+            value: draft
+          - text: $t:archived
+            value: archived
+      readonly: false
+      required: false
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: status
+      table: Partners
+      data_type: varchar
+      default_value: published
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Sessions
+    field: Observations
+    type: alias
+    meta:
+      collection: Sessions
+      field: Observations
+      special:
+        - o2m
+      interface: list-o2m
+      options: null
+      display: null
+      display_options: null
+      readonly: false
+      hidden: false
+      sort: 23
+      width: full
+      translations: null
+      note: null
+      conditions: null
+      required: false
+      group: null
+      validation: null
+      validation_message: null
+  - collection: Sessions
+    field: attendance_count
+    type: integer
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: attendance_count
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options:
+        min: 0
+      readonly: false
+      required: false
+      sort: 10
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: attendance_count
+      table: Sessions
+      data_type: int
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Sessions
+    field: challenges
+    type: text
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: challenges
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 16
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: challenges
+      table: Sessions
+      data_type: text
+      default_value: null
+      max_length: 65535
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Sessions
+    field: complete
+    type: boolean
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: complete
+      group: null
+      hidden: false
+      interface: boolean
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 19
+      special:
+        - cast-boolean
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: complete
+      table: Sessions
+      data_type: boolean
+      default_value: false
+      max_length: null
+      numeric_precision: 3
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Sessions
+    field: date
+    type: dateTime
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: date
+      group: null
+      hidden: false
+      interface: datetime
+      note: null
+      options: null
+      readonly: false
+      required: true
+      sort: 7
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: date
+      table: Sessions
+      data_type: datetime
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Sessions
+    field: date_created
+    type: timestamp
+    meta:
+      collection: Sessions
+      conditions: null
+      display: datetime
+      display_options:
+        relative: true
+      field: date_created
+      group: null
+      hidden: true
+      interface: datetime
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 21
+      special:
+        - date-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_created
+      table: Sessions
+      data_type: timestamp
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Sessions
+    field: feedback
+    type: text
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: feedback
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 15
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: feedback
+      table: Sessions
+      data_type: text
+      default_value: null
+      max_length: 65535
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Sessions
+    field: framework_id
+    type: integer
+    meta:
+      collection: Sessions
+      conditions: null
+      display: related-values
+      display_options:
+        template: '{{name}}'
+      field: framework_id
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{name}}'
+      readonly: false
+      required: true
+      sort: 8
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: framework_id
+      table: Sessions
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Frameworks
+      foreign_key_column: id
+  - collection: Sessions
+    field: id
+    type: integer
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: Sessions
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Sessions
+    field: image
+    type: uuid
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: image
+      group: null
+      hidden: false
+      interface: file-image
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 3
+      special:
+        - file
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: image
+      table: Sessions
+      data_type: char
+      default_value: null
+      max_length: 36
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: Sessions
+    field: institution_id
+    type: integer
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: institution_id
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{Name}}'
+      readonly: false
+      required: true
+      sort: 9
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: institution_id
+      table: Sessions
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Institutions
+      foreign_key_column: id
+  - collection: Sessions
+    field: location_id
+    type: integer
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: location_id
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{name}}'
+      readonly: false
+      required: false
+      sort: 4
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: location_id
+      table: Sessions
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Locations
+      foreign_key_column: id
+  - collection: Sessions
+    field: name
+    type: string
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: name
+      group: null
+      hidden: false
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: true
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: name
+      table: Sessions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Sessions
+    field: partner_id
+    type: integer
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: partner_id
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{nane}}'
+      readonly: false
+      required: false
+      sort: 5
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: partner_id
+      table: Sessions
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Partners
+      foreign_key_column: id
+  - collection: Sessions
+    field: primary_audience
+    type: string
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: primary_audience
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        allowNone: true
+        choices:
+          - text: Children 0-5
+            value: Children 0-5
+          - text: Children 6-11
+            value: Children 6-11
+          - text: Young Adult 12-18
+            value: Young Adult 12-18
+          - text: Adult 19+
+            value: Adult 19+
+          - text: General interest (all ages)
+            value: General interest (all ages)
+      readonly: false
+      required: false
+      sort: 11
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: primary_audience
+      table: Sessions
+      data_type: varchar
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Sessions
+    field: slider_1
+    type: integer
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: slider_1
+      group: null
+      hidden: false
+      interface: slider
+      note: null
+      options:
+        maxValue: 100
+        minValue: 1
+      readonly: false
+      required: false
+      sort: 12
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: slider_1
+      table: Sessions
+      data_type: int
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Sessions
+    field: slider_2
+    type: integer
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: slider_2
+      group: null
+      hidden: false
+      interface: slider
+      note: null
+      options:
+        maxValue: 100
+        minValue: 1
+      readonly: false
+      required: false
+      sort: 13
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: slider_2
+      table: Sessions
+      data_type: int
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Sessions
+    field: slider_3
+    type: integer
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: slider_3
+      group: null
+      hidden: false
+      interface: slider
+      note: null
+      options:
+        maxValue: 100
+        minValue: 1
+      readonly: false
+      required: false
+      sort: 14
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: slider_3
+      table: Sessions
+      data_type: int
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Sessions
+    field: status
+    type: string
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: null
+      options:
+        choices:
+          - text: Published
+            value: published
+          - text: Draft
+            value: draft
+          - text: Archived
+            value: archived
+      readonly: false
+      required: false
+      sort: 22
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: status
+      table: Sessions
+      data_type: varchar
+      default_value: published
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Sessions
+    field: successes
+    type: text
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: successes
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 17
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: successes
+      table: Sessions
+      data_type: text
+      default_value: null
+      max_length: 65535
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Sessions
+    field: summary
+    type: text
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: summary
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: null
+      options: null
+      readonly: false
+      required: false
+      sort: 18
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: summary
+      table: Sessions
+      data_type: text
+      default_value: null
+      max_length: 65535
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: Sessions
+    field: user_created
+    type: string
+    meta:
+      collection: Sessions
+      conditions: null
+      display: user
+      display_options: null
+      field: user_created
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{avatar.$thumbnail}} {{first_name}} {{last_name}}'
+      readonly: true
+      required: false
+      sort: 20
+      special:
+        - user-created
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: user_created
+      table: Sessions
+      data_type: char
+      default_value: null
+      max_length: 36
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_users
+      foreign_key_column: id
+  - collection: Sessions
+    field: user_id
+    type: string
+    meta:
+      collection: Sessions
+      conditions: null
+      display: null
+      display_options: null
+      field: user_id
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{first_name}} {{last_name}}'
+      readonly: false
+      required: true
+      sort: 6
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: user_id
+      table: Sessions
+      data_type: char
+      default_value: null
+      max_length: 36
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_users
+      foreign_key_column: id
+  - collection: directus_users
+    field: institution
+    type: integer
+    meta:
+      collection: directus_users
+      conditions: null
+      display: related-values
+      display_options:
+        template: '{{Name}}'
+      field: institution
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{Name}}'
+      readonly: false
+      required: false
+      sort: null
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: institution
+      table: directus_users
+      data_type: int unsigned
+      default_value: null
+      max_length: null
+      numeric_precision: 10
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: Institutions
+      foreign_key_column: id
+relations:
+  - collection: Dimensions
+    field: Framework
+    related_collection: Frameworks
+    meta:
+      junction_field: null
+      many_collection: Dimensions
+      many_field: Framework
+      one_allowed_collections: null
+      one_collection: Frameworks
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: Dimensions
+      sort_field: null
+    schema:
+      table: Dimensions
+      column: Framework
+      foreign_key_table: Frameworks
+      foreign_key_column: id
+      constraint_name: dimensions_framework_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Dimensions
+    field: framework_id
+    related_collection: Frameworks
+    meta:
+      junction_field: null
+      many_collection: Dimensions
+      many_field: framework_id
+      one_allowed_collections: null
+      one_collection: Frameworks
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Dimensions
+      column: framework_id
+      foreign_key_table: Frameworks
+      foreign_key_column: id
+      constraint_name: dimensions_framework_id_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Dimensions
+    field: user_created
+    related_collection: directus_users
+    meta:
+      junction_field: null
+      many_collection: Dimensions
+      many_field: user_created
+      one_allowed_collections: null
+      one_collection: directus_users
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Dimensions
+      column: user_created
+      foreign_key_table: directus_users
+      foreign_key_column: id
+      constraint_name: dimensions_user_created_foreign
+      on_update: NO ACTION
+      on_delete: NO ACTION
+  - collection: Frameworks
+    field: institution
+    related_collection: Institutions
+    meta:
+      junction_field: null
+      many_collection: Frameworks
+      many_field: institution
+      one_allowed_collections: null
+      one_collection: Institutions
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Frameworks
+      column: institution
+      foreign_key_table: Institutions
+      foreign_key_column: id
+      constraint_name: frameworks_institution_foreign
+      on_update: NO ACTION
+      on_delete: NO ACTION
+  - collection: Frameworks
+    field: user_created
+    related_collection: directus_users
+    meta:
+      junction_field: null
+      many_collection: Frameworks
+      many_field: user_created
+      one_allowed_collections: null
+      one_collection: directus_users
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Frameworks
+      column: user_created
+      foreign_key_table: directus_users
+      foreign_key_column: id
+      constraint_name: frameworks_user_created_foreign
+      on_update: NO ACTION
+      on_delete: NO ACTION
+  - collection: Indicators
+    field: Dimension
+    related_collection: Dimensions
+    meta:
+      junction_field: null
+      many_collection: Indicators
+      many_field: Dimension
+      one_allowed_collections: null
+      one_collection: Dimensions
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: Indicators
+      sort_field: null
+    schema:
+      table: Indicators
+      column: Dimension
+      foreign_key_table: Dimensions
+      foreign_key_column: id
+      constraint_name: indicators_dimension_foreign
+      on_update: NO ACTION
+      on_delete: NO ACTION
+  - collection: Indicators
+    field: dimension_id
+    related_collection: Dimensions
+    meta:
+      junction_field: null
+      many_collection: Indicators
+      many_field: dimension_id
+      one_allowed_collections: null
+      one_collection: Dimensions
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Indicators
+      column: dimension_id
+      foreign_key_table: Dimensions
+      foreign_key_column: id
+      constraint_name: indicators_dimension_id_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Indicators
+    field: user_created
+    related_collection: directus_users
+    meta:
+      junction_field: null
+      many_collection: Indicators
+      many_field: user_created
+      one_allowed_collections: null
+      one_collection: directus_users
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Indicators
+      column: user_created
+      foreign_key_table: directus_users
+      foreign_key_column: id
+      constraint_name: indicators_user_created_foreign
+      on_update: NO ACTION
+      on_delete: NO ACTION
+  - collection: Locations
+    field: institution_id
+    related_collection: Institutions
+    meta:
+      junction_field: null
+      many_collection: Locations
+      many_field: institution_id
+      one_allowed_collections: null
+      one_collection: Institutions
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Locations
+      column: institution_id
+      foreign_key_table: Institutions
+      foreign_key_column: id
+      constraint_name: locations_institution_id_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Locations
+    field: user_created
+    related_collection: directus_users
+    meta:
+      junction_field: null
+      many_collection: Locations
+      many_field: user_created
+      one_allowed_collections: null
+      one_collection: directus_users
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Locations
+      column: user_created
+      foreign_key_table: directus_users
+      foreign_key_column: id
+      constraint_name: locations_user_created_foreign
+      on_update: NO ACTION
+      on_delete: NO ACTION
+  - collection: Locations
+    field: user_id
+    related_collection: directus_users
+    meta:
+      junction_field: null
+      many_collection: Locations
+      many_field: user_id
+      one_allowed_collections: null
+      one_collection: directus_users
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Locations
+      column: user_id
+      foreign_key_table: directus_users
+      foreign_key_column: id
+      constraint_name: locations_user_id_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Observations
+    field: Session
+    related_collection: Sessions
+    meta:
+      junction_field: null
+      many_collection: Observations
+      many_field: Session
+      one_allowed_collections: null
+      one_collection: Sessions
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: Observations
+      sort_field: null
+    schema:
+      table: Observations
+      column: Session
+      foreign_key_table: Sessions
+      foreign_key_column: id
+      constraint_name: observations_session_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Observations
+    field: dimension_id
+    related_collection: Dimensions
+    meta:
+      junction_field: null
+      many_collection: Observations
+      many_field: dimension_id
+      one_allowed_collections: null
+      one_collection: Dimensions
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Observations
+      column: dimension_id
+      foreign_key_table: Dimensions
+      foreign_key_column: id
+      constraint_name: observations_dimension_id_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Observations
+    field: image
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: Observations
+      many_field: image
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Observations
+      column: image
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: observations_image_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Observations
+    field: indicator_id
+    related_collection: Indicators
+    meta:
+      junction_field: null
+      many_collection: Observations
+      many_field: indicator_id
+      one_allowed_collections: null
+      one_collection: Indicators
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Observations
+      column: indicator_id
+      foreign_key_table: Indicators
+      foreign_key_column: id
+      constraint_name: observations_indicator_id_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Observations
+    field: institution_id
+    related_collection: Institutions
+    meta:
+      junction_field: null
+      many_collection: Observations
+      many_field: institution_id
+      one_allowed_collections: null
+      one_collection: Institutions
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Observations
+      column: institution_id
+      foreign_key_table: Institutions
+      foreign_key_column: id
+      constraint_name: observations_institution_id_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Observations
+    field: session_id
+    related_collection: Sessions
+    meta:
+      junction_field: null
+      many_collection: Observations
+      many_field: session_id
+      one_allowed_collections: null
+      one_collection: Sessions
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Observations
+      column: session_id
+      foreign_key_table: Sessions
+      foreign_key_column: id
+      constraint_name: observations_session_id_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Observations
+    field: user_id
+    related_collection: directus_users
+    meta:
+      junction_field: null
+      many_collection: Observations
+      many_field: user_id
+      one_allowed_collections: null
+      one_collection: directus_users
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Observations
+      column: user_id
+      foreign_key_table: directus_users
+      foreign_key_column: id
+      constraint_name: observations_user_id_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Partners
+    field: institution_id
+    related_collection: Institutions
+    meta:
+      junction_field: null
+      many_collection: Partners
+      many_field: institution_id
+      one_allowed_collections: null
+      one_collection: Institutions
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Partners
+      column: institution_id
+      foreign_key_table: Institutions
+      foreign_key_column: id
+      constraint_name: partners_institution_id_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Sessions
+    field: framework_id
+    related_collection: Frameworks
+    meta:
+      junction_field: null
+      many_collection: Sessions
+      many_field: framework_id
+      one_allowed_collections: null
+      one_collection: Frameworks
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Sessions
+      column: framework_id
+      foreign_key_table: Frameworks
+      foreign_key_column: id
+      constraint_name: sessions_framework_id_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Sessions
+    field: image
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: Sessions
+      many_field: image
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Sessions
+      column: image
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: sessions_image_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Sessions
+    field: institution_id
+    related_collection: Institutions
+    meta:
+      junction_field: null
+      many_collection: Sessions
+      many_field: institution_id
+      one_allowed_collections: null
+      one_collection: Institutions
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Sessions
+      column: institution_id
+      foreign_key_table: Institutions
+      foreign_key_column: id
+      constraint_name: sessions_institution_id_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Sessions
+    field: location_id
+    related_collection: Locations
+    meta:
+      junction_field: null
+      many_collection: Sessions
+      many_field: location_id
+      one_allowed_collections: null
+      one_collection: Locations
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Sessions
+      column: location_id
+      foreign_key_table: Locations
+      foreign_key_column: id
+      constraint_name: sessions_location_id_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Sessions
+    field: partner_id
+    related_collection: Partners
+    meta:
+      junction_field: null
+      many_collection: Sessions
+      many_field: partner_id
+      one_allowed_collections: null
+      one_collection: Partners
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Sessions
+      column: partner_id
+      foreign_key_table: Partners
+      foreign_key_column: id
+      constraint_name: sessions_partner_id_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: Sessions
+    field: user_created
+    related_collection: directus_users
+    meta:
+      junction_field: null
+      many_collection: Sessions
+      many_field: user_created
+      one_allowed_collections: null
+      one_collection: directus_users
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Sessions
+      column: user_created
+      foreign_key_table: directus_users
+      foreign_key_column: id
+      constraint_name: sessions_user_created_foreign
+      on_update: NO ACTION
+      on_delete: NO ACTION
+  - collection: Sessions
+    field: user_id
+    related_collection: directus_users
+    meta:
+      junction_field: null
+      many_collection: Sessions
+      many_field: user_id
+      one_allowed_collections: null
+      one_collection: directus_users
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: Sessions
+      column: user_id
+      foreign_key_table: directus_users
+      foreign_key_column: id
+      constraint_name: sessions_user_id_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: directus_settings
+    field: public_favicon
+    related_collection: directus_files
+    meta: null
+    schema:
+      table: directus_settings
+      column: public_favicon
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: directus_settings_public_favicon_foreign
+      on_update: NO ACTION
+      on_delete: NO ACTION
+  - collection: directus_users
+    field: institution
+    related_collection: Institutions
+    meta:
+      junction_field: null
+      many_collection: directus_users
+      many_field: institution
+      one_allowed_collections: null
+      one_collection: Institutions
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: directus_users
+      column: institution
+      foreign_key_table: Institutions
+      foreign_key_column: id
+      constraint_name: directus_users_institution_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
