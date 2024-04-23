@@ -285,32 +285,38 @@ When you're logged into Directus, you'll need to set up some initial data.
 - Unknown or Unexpected
 
 5. Set up indicators for each dimension added above. For Madison Bubbler, you can enter:
+
 Making Connections
 - Connection to Self Identity
 - Connection to Social or Group Dynamic
 - Connection to world or Culture
 - Connection to staff, artist, or space
+
 Initiative & Intentionality
 - Actively participating
 - Setting own goals
 - Taking risks
 - Adjusting goals based on feedback and evidence
+
 Problem Solving & Critical Thinking
 - Trouble shooting & iterating
 - Breaking problems into parts
 - Seeking tools, materials, and ideas to solve s problem
 - Developing work arounds
+
 Creativity & Self Expression
 - Playful exploring
 - Responding aesthetically to materials and processes
 - Using materials in novel ways
 - Focusing on process vs. product
+
 Social Emotional Engagement
 - Working together
 - Observing others
 - Helping, offering, or accepting help
 - Expressing strong emotions related to making, pride, joy, frustration, investment
 - Documenting or sharing ideas
+
 Unknown or Unexpected
 - (we don't have indicators for this dimension)
 
