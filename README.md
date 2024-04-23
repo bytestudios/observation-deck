@@ -52,6 +52,15 @@ Observation deck is a Vue application written in Quasar UMD, and works entirely 
 Using a fresh Ubuntu 23.10 server:
 
 ```
+apt update
+apt upgrade
+snap install core
+snap refresh core
+shutdown -r now
+```
+
+Then after restarting: 
+```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 nvm install 18
 nvm use 18
