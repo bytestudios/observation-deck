@@ -219,7 +219,7 @@ pm2 monit
 ```
 You can leave that interface with the letter q.
 
-### Importing
+### Importing Option 1: Schema (clean, but will need to set up permissions manually)
 Now we can import the schema, so from the main Directus directory we're going to use a file in htdocs:
 ```
 npx directus schema apply ../htdocs/schema-snapshot.yaml
@@ -232,6 +232,24 @@ pm2 restart directus
 ```
 
 From here, you can access the Directus admin at madpl.yoursite.org/admin/ and use the admin email / password you supplied in installing Directus above.
+
+NOTE that permissions are not set up -- the method is to give Observers the rights to update sessions and observations, and Institutional Managers to be able to see sessions and observations from anyone in the institution, and to be able to create Observers. 
+
+### Importing Option 2: Starter Data (less clean, but will include correct permissions)
+
+Starter data is a data dump and can be imported into MySQL.
+
+_Base data file coming soon._
+
+In the Directus database via MySQL, remove all the tables, and then Import base Directus SQL data (called base_data.sql). Then migrate that data from the project directory:
+```
+cd /var/www/vhosts/madpl.yoursite.org/directus-project/
+npx directus database migrate:latest
+```
+...then restart directus in pm2, and test it again:
+```
+pm2 restart directus
+```
 
 ### TLS via Certbot
 
