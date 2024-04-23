@@ -49,26 +49,26 @@ Observation deck is a Vue application written in Quasar UMD, and works entirely 
 
 ## Installation
 
-Using a fresh Ubuntu 23.10 server:
+Using a fresh Ubuntu 23.10 server, update and install a few starter things:
 
 ```
 apt update
 apt upgrade
 snap install core
 snap refresh core
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 shutdown -r now
 ```
 
 Then after restarting: 
 ```
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 nvm install 18
 nvm use 18
 apt install nginx mysql-server
 npm install pm2@latest -g
 pm2 startup systemd
-service pm2-root status
 service pm2-root start
+service pm2-root status
 ```
 
 ### Setting up MySQL
@@ -76,7 +76,7 @@ Create the Directus MySQL database / user
 ```
 mysql -u root -p mysql
 ```
-Once inside:
+Default root password is just enter. Once inside:
 ```
 CREATE DATABASE `directus` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER 'directus'@'localhost' IDENTIFIED WITH mysql_native_password BY 'aReallyGr8Passw';
@@ -91,13 +91,14 @@ mkdir /var/www/vhosts/
 mkdir /var/www/vhosts/odeck.yoursite.org
 mkdir /var/www/vhosts/odeck.yoursite.org/logs
 ```
-Then get a copy of this repository as the root of your website:
+Then go into the root of the website and get a copy of this repository:
 ```
+mkdir /var/www/vhosts/odeck.yoursite.org
 git clone https://github.com/bytestudios/observation-deck.git htdocs/
 ```
-Copy the config sample file to a real sample file
+While still in the website's root, copy the config sample file to a real sample file
 ```
-cp /var/www/vhosts/odeck.yoursite.org/htdocs/config.sample.js /var/www/vhosts/odeck.yoursite.org/htdocs/config.js 
+cp htdocs/config.sample.js htdocs/config.js
 ```
 
 And add server instructions for Nginx
@@ -157,45 +158,54 @@ Now restart the service. The Let’s Encrypt’s Certbot below will add other th
 ```
 systemctl restart nginx
 ```
+You can go to madpl.yoursite.org/home/ to see if nginx is working, but the root of the website (Directus) isn't set up yet.
 
 ### Add Directus
-Go to the server’s root (not htdocs) and then install and set up Directus with npx:
+If not already there, go to the website’s root (not htdocs) and then install and set up Directus with npx:
 ```
 cd /var/www/vhosts/madpl.yoursite.org/
 npx create-directus-project directus-project
 ```
-Follow the prompts to use MySQL with default answers except for the username and password, set in the MySQL section above:  
+It takes a few minutes to install the project, but then follow the prompts to use MySQL / MariaDB with default answers except for the username and password, as that's set by you in the MySQL section above, and an admin email / password of your choosing:
 ```
 directus / aReallyGr8Passw
 ```
 
-Then go into the new directory just created edit this file:
+Then edit the project's .env file:
 ```
-cd directus-project
-nano .env
+nano directus-project/.env
 ```
 And change these line to match:
 ```
-PUBLIC_URL="http://localhost:8055"
-LOG_LEVEL="warn"
 ROOT_REDIRECT="./home"
-SERVE_APP=true
 ```
 
-Get process manager pm2 to automatically start and keep Directus running. It’s important to be in your directus project directory for setting PM2 up, if you’re not already there:
+(We also had these settings, but not seemingly needed:
 ```
-cd /var/www/vhosts/madpl.yoursite.org/directus-project/
+#PUBLIC_URL="http://localhost:8055"
+#LOG_LEVEL="warn"
+#SERVE_APP=true
 ```
+)
+
+Get process manager pm2 to automatically start and keep Directus running. 
 
 Then edit package.json:
 ```
-nano package.json
+nano directus-project/package.json
 ```
-…and in the “scripts” section, just above “test”, add:
+…and in the “scripts” section, just above “test”, add the Start line and requisite comma in the previous line:
 ```
-"start": "npx directus start",
-…or if there’s upload size issues, try this:
-"start": "npx --max-old-space-size=61536 directus start",
+"scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "start": "npx --max-old-space-size=61536 directus start" 
+},
+```
+
+
+Now move into the actual directus project directory for setting PM2 up:
+```
+cd directus-project/
 ```
 
 Then start the project under pm2:
@@ -207,16 +217,84 @@ Then test it using pm2 monit, where you should see the process running:
 ```
 pm2 monit
 ```
+You can leave that interface with the letter q.
 
 ### Importing
-Now we can import the schema, so from the main Directus directory:
+Now we can import the schema, so from the main Directus directory we're going to use a file in htdocs:
 ```
-npx directus schema apply new-snapshot.yaml
+npx directus schema apply ../htdocs/schema-snapshot.yaml
 ```
+You may get an error about a field already having a relationship, just disregard that. (We're working on tuning this process.)
+
+Restart the directus service:
+```
+pm2 restart directus
+```
+
+From here, you can access the Directus admin at madpl.yoursite.org/admin/ and use the admin email / password you supplied in installing Directus above.
+
+### TLS via Certbot
+
+Set up site certificates using Let’s Encrypt:
+```
+snap install --classic certbot
+ln -s /snap/bin/certbot /usr/bin/certbot
+certbot
+```
+…and follow prompts to add a certificate, and remember you’ll need to renew every 90 days.
+
 
 ## How to deploy quickly for testing (Docker)
 
 Coming soon
+
+## Setting up the Data
+
+When you're logged into Directus, you'll need to set up some initial data.
+
+1. Set up your institution. There are session slider questions -- these are the questions that are asked at the end of each session, usually about engagement and vibe. Each of the slider questions has a question and a low/medium/high answer, like "Session Vibe / Energy" as the question would have "chill", "mild" and "intense" as answers.
+
+2. Set up any locations (branches or rooms, etc.) and partners that can be tagged for each session.
+
+3. Set up a framework. Use a custom framework, or you can enter Madison Public Library's Bubbler Framework: "Madison Bubbler"
+
+4. Set up dimensions to track for the framework, along with a color and your framework. We see a maximum 5 or so dimensions. For Madison Bubbler, you can enter:
+- Making Connections
+- Initiative & Intentionality
+- Problem Solving & Critical Thinking
+- Creativity & Self Expression
+- Social Emotional Engagement
+- Unknown or Unexpected
+
+5. Set up indicators for each dimension added above. For Madison Bubbler, you can enter:
+Making Connections
+- Connection to Self Identity
+- Connection to Social or Group Dynamic
+- Connection to world or Culture
+- Connection to staff, artist, or space
+Initiative & Intentionality
+- Actively participating
+- Setting own goals
+- Taking risks
+- Adjusting goals based on feedback and evidence
+Problem Solving & Critical Thinking
+- Trouble shooting & iterating
+- Breaking problems into parts
+- Seeking tools, materials, and ideas to solve s problem
+- Developing work arounds
+Creativity & Self Expression
+- Playful exploring
+- Responding aesthetically to materials and processes
+- Using materials in novel ways
+- Focusing on process vs. product
+Social Emotional Engagement
+- Working together
+- Observing others
+- Helping, offering, or accepting help
+- Expressing strong emotions related to making, pride, joy, frustration, investment
+- Documenting or sharing ideas
+Unknown or Unexpected
+- (we don't have indicators for this dimension)
 
 ## Sponsors
 
