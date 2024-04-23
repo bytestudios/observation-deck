@@ -86,6 +86,11 @@ Then get a copy of this repository as the root of your website:
 ```
 git clone https://github.com/bytestudios/observation-deck.git htdocs/
 ```
+Copy the config sample file to a real sample file
+```
+cp /var/www/vhosts/odeck.yoursite.org/htdocs/config.sample.js /var/www/vhosts/odeck.yoursite.org/htdocs/config.js 
+```
+
 And add server instructions for Nginx
 ```
 nano /etc/nginx/sites-available/odeck.yoursite.org
