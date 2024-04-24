@@ -1,4 +1,4 @@
-# Observation Deck CHANGE THIS
+# Observation Deck
 
 Observation Deck helps libraries, makerspaces and cultural institutions track moments and see trends in the organization's events and programs, and helps them track and share the experiences in a way to help show the value and to create a system of continuous improvement.
 
