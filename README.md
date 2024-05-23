@@ -93,7 +93,7 @@ mkdir /var/www/vhosts/odeck.yoursite.org/logs
 ```
 Then go into the root of the website and get a copy of this repository:
 ```
-mkdir /var/www/vhosts/odeck.yoursite.org
+cd /var/www/vhosts/odeck.yoursite.org
 git clone https://github.com/bytestudios/observation-deck.git htdocs/
 ```
 While still in the website's root, copy the config sample file to a real sample file
@@ -141,7 +141,7 @@ server {
 ```
 Then we need to create a symlink to the place nginx will look for sites:
 ```
-ln -s /etc/nginx/sites-available/madpl.yoursite.org /etc/nginx/sites-enabled/
+ln -s /etc/nginx/sites-available/odeck.yoursite.org /etc/nginx/sites-enabled/
 ```
 We also need to allow larger uploads, so:
 ```
@@ -158,12 +158,12 @@ Now restart the service. The Let’s Encrypt’s Certbot below will add other th
 ```
 systemctl restart nginx
 ```
-You can go to madpl.yoursite.org/home/ to see if nginx is working, but the root of the website (Directus) isn't set up yet.
+You can go to odeck.yoursite.org/home/ to see if nginx is working, but the root of the website (Directus) isn't set up yet.
 
 ### Add Directus
 If not already there, go to the website’s root (not htdocs) and then install and set up Directus with npx:
 ```
-cd /var/www/vhosts/madpl.yoursite.org/
+cd /var/www/vhosts/odeck.yoursite.org/
 npx create-directus-project directus-project
 ```
 It takes a few minutes to install the project, but then follow the prompts to use MySQL / MariaDB with default answers except for the username and password, as that's set by you in the MySQL section above, and an admin email / password of your choosing:
@@ -231,7 +231,7 @@ Restart the directus service:
 pm2 restart directus
 ```
 
-From here, you can access the Directus admin at madpl.yoursite.org/admin/ and use the admin email / password you supplied in installing Directus above.
+From here, you can access the Directus admin at odeck.yoursite.org/admin/ and use the admin email / password you supplied in installing Directus above.
 
 NOTE that permissions are not set up -- the method is to give Observers the rights to update sessions and observations, and Institutional Managers to be able to see sessions and observations from anyone in the institution, and to be able to create Observers. 
 
@@ -243,7 +243,7 @@ _Base data file coming soon._
 
 In the Directus database via MySQL, remove all the tables, and then Import base Directus SQL data (called base_data.sql). Then migrate that data from the project directory:
 ```
-cd /var/www/vhosts/madpl.yoursite.org/directus-project/
+cd /var/www/vhosts/odeck.yoursite.org/directus-project/
 npx directus database migrate:latest
 ```
 ...then restart directus in pm2, and test it again:
