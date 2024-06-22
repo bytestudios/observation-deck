@@ -54,6 +54,7 @@ Using a fresh Ubuntu 23.10 server, update and install a few starter things:
 ```
 apt update
 apt upgrade
+apt install nodejs npm
 snap install core
 snap refresh core
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
