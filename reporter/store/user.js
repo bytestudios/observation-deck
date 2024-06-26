@@ -94,6 +94,7 @@ export const user = Vue.reactive({
 		console.log('> u loadLatestData');
 		user.loadLocalUser();
 		return;
+		/*
 		// this used to refresh the data, but we don't know what it's doing now, except that it's breaking things, so is the user.loadLocalUser() enough? Anything at all?
 		let fdi_array;
 		await user.fetchFDISGraphQL().then((fc_results) => {
@@ -126,6 +127,7 @@ export const user = Vue.reactive({
 			window.localStorage.setItem("partners", JSON.stringify({ data: fc_results }));
 		});
 		console.log('> u loadLatestData complete');
+		*/
 	},
 
 	async checkForTokenRefresh() {
