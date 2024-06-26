@@ -47,12 +47,13 @@ export default {
 				form.login_message = 'Valid credentials. Loading data.';
 				await user.getData(form.email);
 
-				let fdi_array;
-				await user.fetchFDISGraphQL().then((fc_results) => {
-					fdi_array = fc_results;
-					console.log('fdi-old', fdi_array);
-				});
-				window.localStorage.setItem("fdis-old", JSON.stringify({ data: fdi_array }));
+				// hopefully not needed anymore, thanks to fdi_array2 below
+				// let fdi_array;
+				// await user.fetchFDISGraphQL().then((fc_results) => {
+				// 	fdi_array = fc_results;
+				// 	console.log('fdi-old', fdi_array);
+				// });
+				// window.localStorage.setItem("fdis-old", JSON.stringify({ data: fdi_array }));
 
 				let fdi_array2;
 				await user.fetchFDIS().then((fc_results) => {
