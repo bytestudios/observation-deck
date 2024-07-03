@@ -24,6 +24,18 @@
 		background-color: #FCFCFC;
 		font-family: "IBM Plex Sans", sans-serif;
 	}
+	.ham-menu {
+		display: none;
+		flex-direction: column;
+		gap: 6px;
+	}
+	.ham-menu .line {
+		display: inline-block;
+		width: 40px;
+		height: 3px;
+		background-color: #000000;
+		transition: transform .25s, opacity .25s;
+	}
 	.main-content {
 		width: 100%;
 		min-height: 68vh;
@@ -34,9 +46,12 @@
 		margin: 40px auto 0 auto;
 		display: flex;
 		justify-content: space-between;
+		gap: 50px;
 	}
 	.page-content .body {
-    	width: calc(100% - 340px);
+    	/* width: calc(100% - 340px); */
+		flex: 1;
+		margin-right: 50px;
 	}
 	.left-sidebar {
 		width: 100%;
@@ -102,6 +117,7 @@
 		margin-left: 3px;
 	}
 	header {
+		z-index: 100;
 		width: 100%;
 		padding: 40px;
 		background-color: #FFF;
@@ -149,6 +165,53 @@
 		text-decoration: none;
 		position: relative;
 	}
+	@media only screen and (max-width: 768px) {
+		header .site-logo img {
+			width: 200px;
+			height: auto;
+		}
+		.ham-menu {
+			display: flex;
+		}
+		header.open .ham-menu .line:first-child {
+			transform: rotate(45deg) translate(7px, 6px);
+		}
+		header.open .ham-menu .line:nth-child(2) {
+			opacity: 0;
+		}
+		header.open .ham-menu .line:last-child {
+			transform: rotate(-45deg) translate(6px, -6px);
+		}
+		.main-navigation {
+			display: none;
+			position: absolute;
+			width: 100vw;
+			height: calc(100vh - 134px);
+			top: 134px;
+			left: 0px;
+			background-color: #FFFFFF;
+			padding: 20px 50px;
+		}
+		header.open .main-navigation {
+			display: inline-block;
+		}
+		header .main-navigation > ul {
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+			align-items: flex-start;
+		}
+		.page-content {
+			flex-direction: column;
+		}
+		.page-content .body {
+			order: 1;
+			margin: 0 50px;
+		}
+		.left-sidebar {
+			order: 2;
+		}
+	}
 	</style>
 
 	<header id="header" data-embed="Header: whole area">
@@ -194,4 +257,11 @@
 		</div>
 	</div>
 </body>
+
+<script>
+	function toggleNav() {
+		console.log('toggleNav');
+		document.getElementById('header').classList.toggle('open');
+	}
+</script>
 </html>
