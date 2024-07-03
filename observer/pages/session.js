@@ -812,7 +812,7 @@ export default {
 					<q-input class="q-mt-md" outlined label="What were the challenges?" type="textarea" v-model="s_form.challenges" @change="try_autosave" />
 					<q-input class="q-mt-md" outlined label="What were the successes?" type="textarea" v-model="s_form.successes" @change="try_autosave" />
 					<q-input class="q-mt-md" outlined label="Summary?" type="textarea" v-model="s_form.summary" @change="try_autosave" />
-					<q-checkbox class="q-mt-md" v-model="s_form.complete" label="Mark session as complete" @click="try_autosave" />
+					<q-checkbox class="q-mt-md q-mb-xl" v-model="s_form.complete" label="Mark session as complete" @click="try_autosave" />
 					<!--<q-btn v-if="!s_form.complete" color="primary" class="q-mt-md q-mb-xl full-width" @click="s_form.complete = true;save_session(s_form.id, true);">Submit as Completed</q-btn>
 					<q-btn v-if="s_form.complete" color="primary" class="q-mt-md q-mb-xl full-width" @click="s_form.complete = false;save_session(s_form.id, true);">Submit as Incompleted</q-btn>-->
 					&nbsp;
