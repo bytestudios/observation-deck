@@ -1,0 +1,7 @@
+# if using apache, these will help redirect traffic to main for routing
+RewriteEngine on
+RewriteBase /reporter
+RewriteRule ^reporter/index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /reporter/index.html [L]
