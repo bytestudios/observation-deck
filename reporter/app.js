@@ -108,7 +108,7 @@ const app = Vue.createApp({
 
     template: `
 	<q-layout view="hHh LpR fFf">
-		<q-toolbar v-if="data.currentPath!='/login/'"  :class="(data.currentPage=='All Session Data') ? 'bg-grey-1 add-logo' : 'bg-grey-1'">
+		<q-toolbar v-if="data.currentPath!='/login/'"  :class="(data.currentPage=='All Session Data') ? 'add-logo' : ''">
 			<!-- <q-btn v-if="data.currentPath=='/'" flat round dense icon="menu" /> -->
 			<q-btn v-if="data.currentPath!='/'" flat padding="5px 5px" to="/" style="padding-top:2px" icon="arrow_back_ios" />
 			<!--menu-->
