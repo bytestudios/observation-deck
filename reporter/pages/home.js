@@ -514,7 +514,7 @@ export default {
 						location: answers[session_id].location_id ? answers[session_id].location_id.name : '--', 
 						partner: answers[session_id].partner_id ? answers[session_id].partner_id.name : '--', 
 						age: (answers[session_id].primary_audience) ? answers[session_id].primary_audience : '--', 
-						observer: answers[session_id].user_id.first_name ? answers[session_id].user_id.first_name : '--', 
+						observer: (answers[session_id].user_id && answers[session_id].user_id.first_name) ? answers[session_id].user_id.first_name : '--', 
 					});
 
 					// - populate dimensions data for dimensionChart
@@ -553,7 +553,7 @@ export default {
 				// populate group_by arrays
 				if (answers[session_id].location_id && !group_by_location.includes(answers[session_id].location_id.name)) group_by_location.push(answers[session_id].location_id.name);
 				if (answers[session_id].partner_id && !group_by_partner.includes(answers[session_id].partner_id.name)) group_by_partner.push(answers[session_id].partner_id.name);
-				if (answers[session_id].user_id.first_name && !group_by_observer.includes(answers[session_id].user_id.first_name)) group_by_observer.push(answers[session_id].user_id.first_name);
+				if (answers[session_id].user_id && answers[session_id].user_id.first_name && !group_by_observer.includes(answers[session_id].user_id.first_name)) group_by_observer.push(answers[session_id].user_id.first_name);
 
 				// populate chart arrays
 				// - attendance - make month the index, add up attendance number for each
@@ -586,7 +586,7 @@ export default {
 					observations: answers[session_id].Observations.length, 
 					attendance_count: (answers[session_id].attendance_count) ? answers[session_id].attendance_count : '--', 
 					age: (answers[session_id].primary_audience) ? answers[session_id].primary_audience : '--', 
-					observer: answers[session_id].user_id.first_name ? answers[session_id].user_id.first_name : '--', 
+					observer: (answers[session_id].user_id && answers[session_id].user_id.first_name) ? answers[session_id].user_id.first_name : '--', 
 					location: answers[session_id].location_id ? answers[session_id].location_id.name : '--', 
 					partner: answers[session_id].partner_id ? answers[session_id].partner_id.name : '--', 
 					// institution: answers[session_id].institution_id ? answers[session_id].institution_id : '--', 
@@ -608,7 +608,7 @@ export default {
 				if (answers[session_id].slider_3) slider_3_array.push(answers[session_id].slider_3);
 
 				// make list of all observers in sessions list
-				if (!names_observing.includes(answers[session_id].user_id.first_name + ' ' + answers[session_id].user_id.last_name)) names_observing.push(answers[session_id].user_id.first_name + ' ' + answers[session_id].user_id.last_name);
+				if (answers[session_id].user_id && !names_observing.includes(answers[session_id].user_id.first_name + ' ' + answers[session_id].user_id.last_name)) names_observing.push(answers[session_id].user_id.first_name + ' ' + answers[session_id].user_id.last_name);
 
 				// reflections view
 				reflection_rows.push({
@@ -625,7 +625,7 @@ export default {
 					location: answers[session_id].location_id ? answers[session_id].location_id.name : '--', 
 					partner: answers[session_id].partner_id ? answers[session_id].partner_id.name : '--', 
 					age: (answers[session_id].primary_audience) ? answers[session_id].primary_audience : '--', 
-					observer: answers[session_id].user_id.first_name ? answers[session_id].user_id.first_name : '--', 
+					observer: (answers[session_id].user_id && answers[session_id].user_id.first_name) ? answers[session_id].user_id.first_name : '--', 
 				});
 			} // end for each session
 
