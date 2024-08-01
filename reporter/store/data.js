@@ -6,30 +6,36 @@ export const data = Vue.reactive({
 		// console.log('<<getDataGraphQL - how to filter later', filter_form);
 		let sessions = {};
 		let filter_string = '';
+		let new_query = '';
 
-		// start_date and end_date
-		if ((filter_form.start_date && filter_form.start_date != '') && (filter_form.end_date && filter_form.end_date != '')) { // if both are set
-			filter_string += 'date: {_between:[\\"' + filter_form.start_date + '\\",\\"' + filter_form.end_date + '\\"]}';
+		if (filter_form) { // for filtered results
+			// start_date and end_date
+			if ((filter_form.start_date && filter_form.start_date != '') && (filter_form.end_date && filter_form.end_date != '')) { // if both are set
+				filter_string += 'date: {_between:[\\"' + filter_form.start_date + '\\",\\"' + filter_form.end_date + '\\"]}';
+			}
+			else if ((filter_form.start_date && filter_form.start_date != '') && (!filter_form.end_date || filter_form.end_date == '')) { // if only start is set
+				filter_string += 'date: {_gte: \\"' + filter_form.start_date + '\\"}';
+			}
+			else if ((!filter_form.start_date || filter_form.start_date == '') && (filter_form.end_date && filter_form.end_date != '')) { // if only end is set
+				filter_string += 'date: {_lte: \\"' + filter_form.end_date + '\\"}';
+			}
+			// id
+			if (filter_form.selected_sessions.length > 0) filter_string += 'id: {_in: [' + filter_form.selected_sessions + ']}';
+			// sliders
+			if (filter_form.session.includes('slider_1')) filter_string += 'slider_1: {_between: [' + filter_form.slider_1_range.min + ', ' + filter_form.slider_1_range.max + ']}';
+			if (filter_form.session.includes('slider_2')) filter_string += 'slider_2: {_between: [' + filter_form.slider_2_range.min + ', ' + filter_form.slider_2_range.max + ']}';
+			if (filter_form.session.includes('slider_3')) filter_string += 'slider_3: {_between: [' + filter_form.slider_3_range.min + ', ' + filter_form.slider_3_range.max + ']}';
+			// partner
+			if (filter_form.partner) filter_string += 'partner_id: {id: {_eq: ' + filter_form.partner + '}}';
+			// framework
+			if (filter_form.framework) filter_string += 'framework_id: {id: {_eq: ' + filter_form.framework + '}}';
+	
+			// let new_query = 'query SessionsAndObservations {Sessions(filter:{' + filter_string + '}) {id name date framework_id {id name} location_id {id name} partner_id {id name} institution_id {id Name} complete attendance_count primary_audience image {id} summary challenges successes feedback slider_1 slider_2 slider_3 status user_id {id first_name last_name} Observations {id note date_created image {id} dimension_id {id name color} indicator_id {id name} attendee_code is_starred}}}';
+			new_query = 'query SessionsAndObservations {Sessions(filter:{' + filter_string + '}) {id name date framework_id {id name} location_id {id name} partner_id {id name} institution_id {id Name} complete attendance_count primary_audience image {id} summary challenges successes feedback slider_1 slider_2 slider_3 status user_id {id first_name last_name} Observations {id note date_created image {id} dimension_id {id name color} indicator_id {id name} attendee_code is_starred}}}';
+		} else { // for unfiltered sessions (for date dropdown/selection)
+			new_query = 'query SessionsAndObservations {Sessions{id name date Observations {id note date_created}}}';
 		}
-		else if ((filter_form.start_date && filter_form.start_date != '') && (!filter_form.end_date || filter_form.end_date == '')) { // if only start is set
-			filter_string += 'date: {_gte: \\"' + filter_form.start_date + '\\"}';
-		}
-		else if ((!filter_form.start_date || filter_form.start_date == '') && (filter_form.end_date && filter_form.end_date != '')) { // if only end is set
-			filter_string += 'date: {_lte: \\"' + filter_form.end_date + '\\"}';
-		}
-		// id
-		if (filter_form.selected_sessions.length > 0) filter_string += 'id: {_in: [' + filter_form.selected_sessions + ']}';
-		// sliders
-		if (filter_form.session.includes('slider_1')) filter_string += 'slider_1: {_between: [' + filter_form.slider_1_range.min + ', ' + filter_form.slider_1_range.max + ']}';
-		if (filter_form.session.includes('slider_2')) filter_string += 'slider_2: {_between: [' + filter_form.slider_2_range.min + ', ' + filter_form.slider_2_range.max + ']}';
-		if (filter_form.session.includes('slider_3')) filter_string += 'slider_3: {_between: [' + filter_form.slider_3_range.min + ', ' + filter_form.slider_3_range.max + ']}';
-		// partner
-		if (filter_form.partner) filter_string += 'partner_id: {id: {_eq: ' + filter_form.partner + '}}';
-		// framework
-		if (filter_form.framework) filter_string += 'framework_id: {id: {_eq: ' + filter_form.framework + '}}';
-
-		// let new_query = 'query SessionsAndObservations {Sessions(filter:{' + filter_string + '}) {id name date framework_id {id name} location_id {id name} partner_id {id name} institution_id {id Name} complete attendance_count primary_audience image {id} summary challenges successes feedback slider_1 slider_2 slider_3 status user_id {id first_name last_name} Observations {id note date_created image {id} dimension_id {id name color} indicator_id {id name} attendee_code is_starred}}}';
-		let new_query = 'query SessionsAndObservations {Sessions(filter:{' + filter_string + '}) {id name date framework_id {id name} location_id {id name} partner_id {id name} institution_id {id Name} complete attendance_count primary_audience image {id} summary challenges successes feedback slider_1 slider_2 slider_3 status user_id {id first_name last_name} Observations {id note date_created image {id} dimension_id {id name color} indicator_id {id name} attendee_code is_starred}}}';
+		
 		await fetch(CONFIG.directus_url+'/graphql', {
 			method: 'POST',
 			headers: {
@@ -54,7 +60,7 @@ export const data = Vue.reactive({
 			});
 		})
 		.catch(err => console.error(err));
-		console.log('----whats returned through the filtering:', sessions);
+		// console.log('----whats returned through the filtering:', sessions);
 		return sessions;
 	},
 	async saveSession(which_id, s_form) {
