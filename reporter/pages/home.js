@@ -120,6 +120,9 @@ export default {
 		let dimension_datasets = [];
 		let dimension_colors = [];
 
+		let all_results = {};
+		let calendar_sessions = reactive([]);
+
 		// POPULATE ALL SESSIONS ITEMS ------------------------------------------------------------
 		// data we'll be populating everything with
 		let answers = {};
@@ -242,12 +245,12 @@ export default {
 				getting_data.forEach(filter => {
 					let type = filter.split('=')[0];
 					let value = filter.split('=')[1]
-					console.log('----', type, 'is', value);
+					// console.log('----', type, 'is', value);
 
 					// build up form data to pass through getData
 					if (type == 'start_date') filter_form.start_date = value; // start date
 					if (type == 'end_date') filter_form.end_date = value; // end date
-					if (type == 'selected_sessions') filter_form.selected_sessions.push(Number(value)); // selected dates
+					if (type == 'selected_sessions') filter_form.selected_sessions.push(value); // selected dates
 					if (type == 'slider_1_range') { // first slider
 						filter_form.session.push('slider_1');
 						filter_form.slider_1_range.min = value.split(',')[0];
@@ -416,6 +419,23 @@ export default {
 
 		async function getData(which_trigger) { // loop through all sessions, filtering according to form, and feed the results back in
 			
+			all_results = await data.getData();
+			console.log('---->>getData, all_results:', all_results);
+
+			// resetting table mode view
+			calendar_sessions.length = 0;
+
+			for (var session_id in all_results) { // for each session
+				let session_date = new Date(all_results[session_id].date);
+				// session selection
+				calendar_sessions.push({
+					id: all_results[session_id].id,
+					name: all_results[session_id].name,
+					date: session_date.getUTCFullYear().toString() + '/' + (('0' + (session_date.getMonth() + 1)).slice(-2)) + '/' + ('0' + session_date.getDate()).slice(-2),
+				});
+				// push session's date to highlight_dates
+				highlight_dates.push(session_date.getUTCFullYear().toString() + '/' + (('0' + (session_date.getMonth() + 1)).slice(-2)) + '/' + ('0' + session_date.getDate()).slice(-2))
+			}
 
 			// answers!
 			answers = await data.getData(filter_form);
@@ -594,9 +614,6 @@ export default {
 					// date: (session_date.getMonth() + 1) + '/' + session_date.getDate() + '/' + session_date.getUTCFullYear().toString().slice(-2), 
 					date: session_date.getUTCFullYear().toString() + '/' + (('0' + (session_date.getMonth() + 1)).slice(-2)) + '/' + ('0' + session_date.getDate()).slice(-2), 
 				});
-
-				// push session's date to highlight_dates
-				highlight_dates.push(session_date.getUTCFullYear().toString() + '/' + (('0' + (session_date.getMonth() + 1)).slice(-2)) + '/' + ('0' + session_date.getDate()).slice(-2))
 
 				// update narrative summary numbers
 				total_participants.value += answers[session_id].attendance_count;
@@ -1119,6 +1136,7 @@ export default {
 
 			// for top filter form
 			filter_form, 
+			calendar_sessions, 
 			highlight_dates, 
 			removeSession, 
 			session_sliders, 
@@ -1220,10 +1238,7 @@ export default {
 								<q-item-label header class="text-h7 text-weight-medium text-black" :class="$q.dark.isActive ? 'bg-black' : 'bg-white'">{{filter_form.date}} Sessions</q-item-label>
 								<q-separator color="grey" inset />
 								<q-list class="">
-									<template v-for="session in table_rows">
-
-										<!-- --{{session.date}}={{filter_form.date}}-- -->
-
+									<template v-for="session in calendar_sessions">
 										<q-item v-if="session.date.includes(filter_form.date)" dense class="row items-start">
 											<q-checkbox dense size="lg" v-model="filter_form.selected_sessions" :val="session.id" @update:model-value="getData('session_trigger')" color="grey" checked-icon="check_circle" unchecked-icon="add_circle_outline" />
 											<q-item-label class="q-pt-xs">{{session.name}}</q-item-label>
@@ -1235,7 +1250,7 @@ export default {
 								<q-item-label header class="text-h7 text-weight-medium text-black q-pl-none q-pt-none" :class="$q.dark.isActive ? 'bg-black' : 'bg-white'">Selected Sessions - {{filter_form.selected_sessions.length}}</q-item-label>
 								<q-list class="">
 									<template v-for="session in filter_form.selected_sessions">
-										<template v-for="match in table_rows">
+										<template v-for="match in calendar_sessions">
 											<q-item v-if="session == match.id" dense class="row items-center items-start q-pa-none">
 												<q-item-label class="col-grow" style="margin: 0" ><b>{{match.date.split('T')[0].replaceAll('-','/')}} | </b>{{match.name}}</q-item-label>
 												<q-btn @click="removeSession(match.id)" dense flat icon="close" color="grey" />
