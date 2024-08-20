@@ -83,8 +83,9 @@ export default {
 		let attendanceChart;
 		let ageChart;
 		let frameworkChart;
-		let dimensionChart;
 		let active_frameworks = ref(Object.keys(framework_options).length); // to determine when to show dimension chart
+		let dimensionChart;
+		let indicatorChart;
 		let times_run = 0;
 
 		let attendance_chart = reactive([]); // line chart
@@ -119,6 +120,10 @@ export default {
 		let dimension_labels = [];
 		let dimension_datasets = [];
 		let dimension_colors = [];
+
+		let indicators_chart = reactive({}); // pie chart
+		let indicator_labels = [];
+		let indicator_datasets = [];
 
 		let all_results = {};
 		let calendar_sessions = reactive([]);
@@ -293,10 +298,17 @@ export default {
 					if (type == 'o_search') { // search
 						observations_filter.search = value.replaceAll('+', ' ');
 					}
-					if (type == 'o_select_1') observations_filter.select_1 = value; // first category select
+					if (type == 'o_select_1') {
+						observations_filter.select_1 = value; // first category select
+					}
 					if (type == 'o_select_2') {  // second observations select
-						observations_filter.select_2 = value.replaceAll('+', ' ');
-						observations_filter.select_2 = observations_filter.select_2.replaceAll('%26', '&'); // second select
+						value = value.replaceAll('+', ' ');
+						value = value.replaceAll('%26', '&');
+						if (observations_filter.select_1 == 'dimensions') { // if there's a dimension chosen, get it's info
+							observations_filter.select_2 = {label: value.split('_')[0], value: value.split('_')[1]};
+						} else {
+							observations_filter.select_2 = value;
+						}
 					}
 					if (type == 'o_images') observations_filter.images = true; // images
 					if (type == 'o_starred') observations_filter.starred = true; // starred
@@ -323,10 +335,6 @@ export default {
 			// The popstate event is fired each time when the current history entry changes..
 			enactFilters();
 		}, false);		
-
-
-		
-
 
 		function showMore() { // to show more observations
 			// console.log('<<showMore, showing:', observation_rows, observations_showing);
@@ -420,7 +428,7 @@ export default {
 		async function getData(which_trigger) { // loop through all sessions, filtering according to form, and feed the results back in
 			
 			all_results = await data.getData();
-			console.log('---->>getData, all_results:', all_results);
+			// console.log('---->>getData, all_results:', all_results);
 
 			// resetting table mode view
 			calendar_sessions.length = 0;
@@ -471,6 +479,9 @@ export default {
 			}
 			for (var dimensions in dimensions_chart) { // to reset dimensions graph
 				delete dimensions_chart[dimensions];
+			}
+			for (var indicators in indicators_chart) { // to reset indicators graph
+				delete indicators_chart[indicators];
 			}
 			active_frameworks.value = 0; // when to show dimensions graph
 
@@ -547,9 +558,34 @@ export default {
 							dimensions_chart[answers[session_id].Observations[observation_id].dimension_id.name].count++;
 						}
 					}
+
+					// - populate indicators data for indicatorChart
+					if (answers[session_id].Observations[observation_id].indicator_id) {
+						// console.log('need observation id:', answers[session_id].Observations[observation_id].dimension_id.id, 'and indicator info:', answers[session_id].Observations[observation_id].indicator_id);
+						// if dimension subgroup doesn't exist, make it
+						if (!indicators_chart[answers[session_id].Observations[observation_id].dimension_id.id]) {
+							indicators_chart[answers[session_id].Observations[observation_id].dimension_id.id] = {label: answers[session_id].Observations[observation_id].dimension_id.name};
+						}
+						// if indicator isn't in it's dimension subgroup, add it and start a count
+						if (!indicators_chart[answers[session_id].Observations[observation_id].dimension_id.id].hasOwnProperty(answers[session_id].Observations[observation_id].indicator_id.id)) {
+							indicators_chart[answers[session_id].Observations[observation_id].dimension_id.id][answers[session_id].Observations[observation_id].indicator_id.id] = {name: answers[session_id].Observations[observation_id].indicator_id.name, count: 1};
+						} else { // if indicator is in it's dimension subgroup, concatenate count
+							indicators_chart[answers[session_id].Observations[observation_id].dimension_id.id][answers[session_id].Observations[observation_id].indicator_id.id].count++;
+						}
+					}
+
 					
 					// populate options for observations view dropdowns
-					if (answers[session_id].Observations[observation_id].dimension_id && answers[session_id].Observations[observation_id].dimension_id.name && !all_dimensions.includes(answers[session_id].Observations[observation_id].dimension_id.name)) all_dimensions.push(answers[session_id].Observations[observation_id].dimension_id.name);
+					let found = all_dimensions.some(el => el.value === answers[session_id].Observations[observation_id].dimension_id.id); // check if id is already in all_dimensions
+					if (
+						answers[session_id].Observations[observation_id].dimension_id && 
+						answers[session_id].Observations[observation_id].dimension_id.name && 
+						(!found) // if id isn't already in all_dimensions
+						// !all_dimensions.hasOwnProperty(answers[session_id].Observations[observation_id].dimension_id)
+					) {
+						// all_dimensions[answers[session_id].Observations[observation_id].dimension_id.id] = {label: answers[session_id].Observations[observation_id].dimension_id.name, value: answers[session_id].Observations[observation_id].dimension_id.id};
+						all_dimensions.push({label: answers[session_id].Observations[observation_id].dimension_id.name, value: answers[session_id].Observations[observation_id].dimension_id.id});
+					}
 					if (answers[session_id].Observations[observation_id].indicator_id && !all_indicators.includes(answers[session_id].Observations[observation_id].indicator_id.name)) all_indicators.push(answers[session_id].Observations[observation_id].indicator_id.name);
 					if (answers[session_id].Observations[observation_id].attendee_code && !all_attendees.includes(answers[session_id].Observations[observation_id].attendee_code)) all_attendees.push(answers[session_id].Observations[observation_id].attendee_code);
 				
@@ -557,8 +593,8 @@ export default {
 					if (
 						(observations_filter.search == '' || answers[session_id].Observations[observation_id].note.includes(observations_filter.search)) && 
 						(observations_filter.select_2 == null || (
-								(observations_filter.select_1 == 'dimensions' && answers[session_id].Observations[observation_id].dimension_id && answers[session_id].Observations[observation_id].dimension_id.name == observations_filter.select_2) || 
-								(observations_filter.select_1 == 'indicators' && answers[session_id].Observations[observation_id].indicator_id && answers[session_id].Observations[observation_id].indicator_id.name == observations_filter.select_2) || 
+								(observations_filter.select_1 == 'dimensions' && answers[session_id].Observations[observation_id].dimension_id && answers[session_id].Observations[observation_id].dimension_id.name == observations_filter.select_2.label) || 
+								(observations_filter.select_1 == 'indicators' && answers[session_id].Observations[observation_id].indicator_id && answers[session_id].Observations[observation_id].indicator_id.name == observations_filter.select_2.label) || 
 								(observations_filter.select_1 == 'attendee_code' && answers[session_id].Observations[observation_id].attendee_code && answers[session_id].Observations[observation_id].attendee_code == observations_filter.select_2)
 							)) && 
 						(observations_filter.images == false || (observations_filter.images == true && answers[session_id].Observations[observation_id].image != null)) && 
@@ -663,11 +699,8 @@ export default {
 			else slider_3_average.value = user.institution.data.session_slider_3_label_high; // if average is high
 
 			active_frameworks.value = Object.keys(frameworks_chart).length; // get number of frameworks to determine which charts to show
-			paintCharts(attendance_chart, age_groups_chart, frameworks_chart, dimensions_chart); // only paint the charts once
+			paintCharts(attendance_chart, age_groups_chart, frameworks_chart, dimensions_chart, indicators_chart); // only paint the charts once
 			groupBy();
-
-
-
 
 
 			// figuring out url stuff?
@@ -706,11 +739,20 @@ export default {
 			// observations filters -----
 			(observations_filter.search) ? params.o_search = observations_filter.search : delete params.o_search; // observations filter search
 			(observations_filter.select_1) ? params.o_select_1 = observations_filter.select_1 : delete params.o_select_1; // observations filter select_1
-			(observations_filter.select_1 && observations_filter.select_2) ? params.o_select_2 = observations_filter.select_2 : delete params.o_select_2; // observations filter select_1 and select_2
+
+			if (observations_filter.select_1 && observations_filter.select_2) { // if dropdown 1 and 2 are both selected
+				if (observations_filter.select_1 == 'dimensions') { // if 1 is a dimension, we need unique info
+					params.o_select_2 = observations_filter.select_2.label+'_'+observations_filter.select_2.value;
+				} else { // else just give the value
+					params.o_select_2 = observations_filter.select_2;
+				}
+			} else { // if there's no dropdown 2, remove it
+				delete params.o_select_2;
+			}
 			(observations_filter.images) ? params.o_images = observations_filter.images : delete params.o_images; // observations filter images
 			(observations_filter.starred) ? params.o_starred = observations_filter.starred : delete params.o_starred; // observations filter starred
 
-			console.log('----push:', params);
+			// console.log('----push:', params);
 
 			await Vue.$router.push({ path: '/', query: params });
 			// return false;
@@ -725,7 +767,7 @@ export default {
 				document.getElementById('slider_select').click(); // reopen when browser forces it closed
 			}
 			
-			console.log('----router now is:', Vue.$router);
+			// console.log('----router now is:', Vue.$router);
 		} // end getData
 
 		const rangeUpdate = debounce(() => getData('slider_trigger'));
@@ -733,10 +775,11 @@ export default {
 		function clearObservationSelect() {
 			// console.log('----<<clearObservationSelect', observations_filter.select_2);
 			observations_filter.select_2 = null;
+			getData();
 		}
 
-		function paintCharts(attendance_object, ages_object, frameworks_object, dimensions_object) { // create or update charts
-			// console.log('<<paintCharts:', attendance_object, ages_object, frameworks_object, dimensions_object);
+		function paintCharts(attendance_object, ages_object, frameworks_object, dimensions_object, indicators_object) { // create or update charts
+			// console.log('<<paintCharts:', attendance_object, ages_object, frameworks_object, dimensions_object, indicators_object);
 
 			// prepping/separating all data into label and data arrays for charts
 			attendance_labels.length = 0;
@@ -745,12 +788,14 @@ export default {
 				attendance_labels.push(attendance_object[month_id].month);
 				attendance_datasets.push(attendance_object[month_id].count);
 			}
+
 			age_labels.length = 0;
 			age_datasets.length = 0;
 			for (var age_id in ages_object) { // ageChart
 				age_labels.push(age_id);
 				age_datasets.push(ages_object[age_id].count);
 			}
+
 			framework_labels.length = 0;
 			framework_datasets.length = 0;
 			for (var framework_id in frameworks_object) { // frameworkChart
@@ -765,6 +810,20 @@ export default {
 				dimension_labels.push(dimension_id);
 				dimension_datasets.push(dimensions_object[dimension_id].count);
 				dimension_colors.push(dimensions_object[dimension_id].color);
+			}
+
+			indicator_labels.length = 0;
+			indicator_datasets.length = 0;
+
+			for (var dimension_id in indicators_object) { // cycle through indicators according to their parent dimension
+				if (observations_filter.select_2 && dimension_id == observations_filter.select_2.value) { // if the indicators belong to the chosen dimension
+					for (var indicator_id in indicators_object[observations_filter.select_2.value]) { // for each indicator under the chosen dimension
+						// if .search, .image, .star filters are applied, skip the ones that don't match
+
+						indicator_labels.push(indicators_object[observations_filter.select_2.value][indicator_id].name); // push the label
+						indicator_datasets.push(indicators_object[observations_filter.select_2.value][indicator_id].count); // push the count
+					}
+				}
 			}
 
 			if (times_run == 0) { // if it's the first time, create the graphs
@@ -827,6 +886,7 @@ export default {
 						datasets: [{
 							label: ' times seen',
 							data: framework_datasets,
+							backgroundColor: ['#36A2EB', '#FF6484', '#4BC0C0', '#FF9F40', '#9966FF', '#FFCD57', '#CACBCF'],
 						}]
 					},
 					options: {
@@ -866,19 +926,44 @@ export default {
 						}
 					}
 				});
+
+				indicatorChart = new Chart('indicatorChart', {
+					type: 'pie',
+					data: {
+						labels: indicator_labels,
+						datasets: [{
+							label: ' times seen',
+							data: indicator_datasets,
+							backgroundColor: ['#36A2EB', '#FF6484', '#4BC0C0', '#FF9F40', '#9966FF', '#FFCD57', '#CACBCF'],
+						}]
+					},
+					options: {
+						responsive: true,
+						plugins: {
+							legend: {
+								display: false,
+							},
+							title: {
+								display: true,
+								text: 'Indicators'
+							}
+						}
+					}
+				});
 			} else { // otherwise, update the graphs
-				console.log('THE CHARTS:', attendanceChart, ageChart, frameworkChart, dimensionChart);
+				// console.log('THE CHARTS:', attendanceChart, ageChart, frameworkChart, dimensionChart, indicatorChart);
 				attendanceChart.update();
 				ageChart.update();
 				frameworkChart.update();
 				dimensionChart.update();
+				indicatorChart.update();
 			}
 
 			times_run++;
 		}; // end paintCharts
 
 		function groupBy() { // create multiple groups and divide the data up between them
-			console.log('<<groupBy function:', filter_form.group_by);
+			// console.log('<<groupBy function:', filter_form.group_by);
 			Object.keys(table_rows_grouped).forEach(key => {
 				delete table_rows_grouped[key];
 			});
@@ -898,7 +983,7 @@ export default {
 
 					table_rows_grouped[monthNamesFull[month]] = []; // table view
 					for (var s_id in table_rows) { // for each session
-						let s_month = table_rows[s_id].date.split('/',1)[0];
+						let s_month = table_rows[s_id].date.split('/')[1];
 						// console.log('----LOOK HERE DUDE', s_month);
 						if (month == (s_month - 1)) { // if the current month matches the current session's month
 							// console.log('----HERE:', s_month);
@@ -909,7 +994,7 @@ export default {
 
 					reflection_rows_grouped[monthNamesFull[month]] = []; // reflections view
 					for (var r_id in reflection_rows) { // for each reflection
-						let r_month = reflection_rows[r_id].date.split('/',1)[0];
+						let r_month = reflection_rows[r_id].date.split('/')[1];
 						if (month == (r_month - 1)) { // if the current month matches the current reflection's month
 							// console.log('----HERE:', r_month);
 							group_matches++;
@@ -920,7 +1005,7 @@ export default {
 					observation_rows_grouped[monthNamesFull[month]] = []; // observations view
 					for (var o_id in observation_rows) { // for each observation
 						// console.log('----' + observation_rows[o_id].date + ': ' + observation_rows[o_id].note);
-						let o_month = observation_rows[o_id].date.split('/',1)[0];
+						let o_month = observation_rows[o_id].date.split('/')[1];
 						if (month == (o_month - 1)) { // if the current month matches the current observation's month
 							// console.log('----HERE:', o_month);
 							group_matches++;
@@ -1150,6 +1235,7 @@ export default {
 
 			// charts
 			active_frameworks, 
+			indicator_datasets,
 
 			// all sessions table view
 			table_columns, 
@@ -1337,8 +1423,10 @@ export default {
 					<canvas id="ageChart"></canvas>
 				</div>
 				<div bordered :class="$q.dark.isActive ? 'bg-black' : 'bg-white'">
-					<canvas style="max-height: 210px; margin: auto; padding-bottom: 10px;" :style="active_frameworks > 1 ? '' : 'display: none;'" id="frameworkChart"></canvas>
-					<canvas style="max-height: 210px; margin: auto; padding-bottom: 10px;" :style="active_frameworks < 2 ? '' : 'display: none;'" id="dimensionChart"></canvas>
+					<canvas style="max-height: 210px; margin: auto; padding-bottom: 10px;" :style="active_frameworks > 1 && (observations_filter.select_1 != 'dimensions' || observations_filter.select_2 === null) ? '' : 'display: none;'" id="frameworkChart"></canvas>
+					<canvas style="max-height: 210px; margin: auto; padding-bottom: 10px;" :style="active_frameworks < 2 && (observations_filter.select_1 != 'dimensions' || observations_filter.select_2 === null) ? '' : 'display: none;'" id="dimensionChart"></canvas>
+					<canvas style="max-height: 210px; margin: auto; padding-bottom: 10px;" :style="observations_filter.select_1 == 'dimensions' && observations_filter.select_2 && indicator_datasets.length > 0 ? '' : 'display: none;'" id="indicatorChart"></canvas>
+					<p class="text-center q-ma-sm" :style="observations_filter.select_1 == 'dimensions' && observations_filter.select_2 && indicator_datasets.length == 0 ? '' : 'display: none;'">There are no matching indicators</p>
 				</div>
 				
 			</div>
@@ -1382,8 +1470,10 @@ export default {
 				</div>
 			</q-card>
 
+			<!-- table view -->
 			<template v-else-if="filter_form.mode == 'table'">
 				<q-separator color="black" />
+				<!-- table if not grouped -->
 				<q-table 
 					v-if="currently_grouping == false" 
 					dense flat :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'" 
@@ -1417,92 +1507,87 @@ export default {
 					</template>
 				</q-table>
 
+				<!-- tables if grouped -->
 				<template v-else >
 					<template v-if="number_of_groups > 0">
 						<template v-for="group, title in table_rows_grouped" >
 							<template v-if="group.length > 0" >
-								<q-table
-									dense flat :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'" 
-									ref="tableRef" 
-									:title="title" 
-									:rows="group" 
-									:columns="table_columns" 
-									row-key="id" 
-									virtual-scroll 
-									v-model:pagination="pagination" 
-									:rows-per-page-options="[0]" 
-									hide-bottom 
-								>
 
-									<template v-slot:header-cell-name="props">
-										<q-th :props="props" style="width: 250px;">
-											{{props.col.label}}
-										</q-th>
-									</template>
-									<template v-slot:header-cell-observations="props">
-										<q-th :props="props">
-											<q-icon name="content_paste_search" size="1.5em" />
-										</q-th>
-									</template>
-									<template v-slot:header-cell-attendance_count="props">
-										<q-th :props="props">
-											<q-icon name="person" size="1.5em" />
-										</q-th>
-									</template>
-									<template v-slot:body-cell-name="props">
-										<q-td :props="props" class="row">
-											<div class="row no-wrap" style="width: 48px;height: 15px;">
-												<template v-for="color in props.row.dimensions">
-													<div class="col" :style="'height:100%; background-color: ' + color + ';'"></div>
-												</template>
-											</div>
-											<div @click="expandSession(props.row.id)" class="q-ml-sm ellipsis" style="flex: 1; cursor: pointer;">{{ props.row.name }}</div>
-										</q-td>
-									</template>
-									<template v-slot:body-cell-observations="props">
-										<q-td :props="props" style="width: 60px;" >
-											<div class="ellipsis">{{props.row.observations}}</div>
-										</q-td>
-									</template>
-									<template v-slot:body-cell-attendance_count="props">
-										<q-td :props="props" style="width: 60px;" >
-											<div class="ellipsis">{{props.row.attendance_count}}</div>
-										</q-td>
-									</template>
-									<template v-slot:body-cell-age="props">
-										<q-td :props="props" style="width: 150px;" >
-											<div class="ellipsis">{{props.row.age}}</div>
-										</q-td>
-									</template>
-									<template v-slot:body-cell-observer="props">
-										<q-td :props="props" style="width: 100px;" >
-											<div class="ellipsis">{{props.row.observer}}</div>
-										</q-td>
-									</template>
-									<template v-slot:body-cell-location="props">
-										<q-td :props="props" style="width: 160px;" >
-											<div class="ellipsis">{{props.row.location}}</div>
-										</q-td>
-									</template>
-									<template v-slot:body-cell-partner="props">
-										<q-td :props="props" style="width: 150px;" >
-											<div class="ellipsis">{{props.row.partner}}</div>
-										</q-td>
-									</template>
-									
-									<template v-slot:body-cell-framework="props">
-										<q-td :props="props" style="width: 150px;" >
-											<div class="ellipsis">{{props.row.framework}}</div>
-										</q-td>
-									</template>
-									
-									<template v-slot:body-cell-date="props">
-										<q-td :props="props" style="width: 100px;" >
-											<div class="ellipsis">{{props.row.date}}</div>
-										</q-td>
-									</template>
-								</q-table>
+								<!-- TODO: make table expandable -->
+								<q-expansion-item default-opened :label="title" header-class="text-h7 text-weight-regular q-px-none" style="width: 100%; font-size: 20px;">
+									<q-table dense flat :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2'" ref="tableRef" :rows="group" :columns="table_columns" row-key="id" virtual-scroll v-model:pagination="pagination" :rows-per-page-options="[0]" hide-bottom >
+
+										<template v-slot:header-cell-name="props">
+											<q-th :props="props" style="width: 250px;">
+												{{props.col.label}}
+											</q-th>
+										</template>
+										<template v-slot:header-cell-observations="props">
+											<q-th :props="props">
+												<q-icon name="content_paste_search" size="1.5em" />
+											</q-th>
+										</template>
+										<template v-slot:header-cell-attendance_count="props">
+											<q-th :props="props">
+												<q-icon name="person" size="1.5em" />
+											</q-th>
+										</template>
+										<template v-slot:body-cell-name="props">
+											<q-td :props="props" class="row">
+												<div class="row no-wrap" style="width: 48px;height: 15px;">
+													<template v-for="color in props.row.dimensions">
+														<div class="col" :style="'height:100%; background-color: ' + color + ';'"></div>
+													</template>
+												</div>
+												<div @click="expandSession(props.row.id)" class="q-ml-sm ellipsis" style="flex: 1; cursor: pointer;">{{ props.row.name }}</div>
+											</q-td>
+										</template>
+										<template v-slot:body-cell-observations="props">
+											<q-td :props="props" style="width: 60px;" >
+												<div class="ellipsis">{{props.row.observations}}</div>
+											</q-td>
+										</template>
+										<template v-slot:body-cell-attendance_count="props">
+											<q-td :props="props" style="width: 60px;" >
+												<div class="ellipsis">{{props.row.attendance_count}}</div>
+											</q-td>
+										</template>
+										<template v-slot:body-cell-age="props">
+											<q-td :props="props" style="width: 150px;" >
+												<div class="ellipsis">{{props.row.age}}</div>
+											</q-td>
+										</template>
+										<template v-slot:body-cell-observer="props">
+											<q-td :props="props" style="width: 100px;" >
+												<div class="ellipsis">{{props.row.observer}}</div>
+											</q-td>
+										</template>
+										<template v-slot:body-cell-location="props">
+											<q-td :props="props" style="width: 160px;" >
+												<div class="ellipsis">{{props.row.location}}</div>
+											</q-td>
+										</template>
+										<template v-slot:body-cell-partner="props">
+											<q-td :props="props" style="width: 150px;" >
+												<div class="ellipsis">{{props.row.partner}}</div>
+											</q-td>
+										</template>
+										
+										<template v-slot:body-cell-framework="props">
+											<q-td :props="props" style="width: 150px;" >
+												<div class="ellipsis">{{props.row.framework}}</div>
+											</q-td>
+										</template>
+										
+										<template v-slot:body-cell-date="props">
+											<q-td :props="props" style="width: 100px;" >
+												<div class="ellipsis">{{props.row.date}}</div>
+											</q-td>
+										</template>
+									</q-table>
+								</q-expansion-item>
 								<q-separator color="grey-14" class="q-mt-sm" />
+
 							</template>
 						</template>
 					</template>
@@ -1510,6 +1595,7 @@ export default {
 				</template>
 			</template>
 
+			<!-- narrative view -->
 			<div v-else class="row no-wrap q-mt-md narrative-columns">
 				<div >
 					<div class="text-h8 text-weight-medium q-mb-sm">Data Summary Sentence</div>
@@ -1558,8 +1644,9 @@ export default {
 							</template>
 						</q-btn-toggle>
 						<div class="q-pa-md" :class="$q.dark.isActive ? 'bg-black' : 'bg-white'" style="border: 1px solid #E2E2E2;" >
+							<!-- reflections cards -->
 							<template v-if="narrative_tab == 'reflections'">
-								<!-- {{reflections_filter}} -->
+								<!-- reflections filters -->
 								<template class="row items-center q-mb-md">
 									<div class="text-h8 text-weight-medium q-mr-md">View:</div>
 									<q-form class="row items-center" style="flex: 1;" >
@@ -1575,6 +1662,7 @@ export default {
 								</template>
 
 								<template class="row items-stretch" style="gap: 10px">
+									<!-- ungrouped reflections -->
 									<template v-if="currently_grouping == false" >
 										<!-- <q-card v-for="row in reflection_rows" square flat bordered class="my-card q-pa-sm" :class="$q.dark.isActive ? 'bg-grey-7' : 'bg-grey-12'" style="width:calc((100% - 50px) / 3);"> -->
 										<q-card v-for="row in reflection_rows" square flat bordered class="my-card q-pa-sm reflections-item" :class="$q.dark.isActive ? 'bg-grey-7' : 'bg-grey-12'" >
@@ -1623,63 +1711,66 @@ export default {
 											<div v-if="reflections_filter.feedback"><b>Feedback/improvements for Future [intended as notes to observer only?]:</b> {{row.feedback}}</div>
 										</q-card>
 									</template>
+									<!-- grouped reflections -->
 									<template v-else >
 										<template v-if="number_of_groups > 0">
 											<template v-for="group, title in reflection_rows_grouped">
 												<template v-if="group.length > 0" >
 													<q-separator style="width: 100%;" color="black" />
-													<div class="q-table__title" style="width: 100%;">{{title}}</div>
-													<q-card v-for="reflection, key in group" square flat bordered class="my-card q-pa-sm reflections-item" :class="$q.dark.isActive ? 'bg-grey-7' : 'bg-grey-12'" >
-														<div class="row no-wrap items-center">
-															<div class="row no-wrap q-mr-sm" style="width: 48px;height: 15px;">
-																<template v-for="color in reflection.dimensions">
-																	<div class="col" :style="'height:100%; background-color: ' + color + ';'">
+													<q-expansion-item default-opened :label="title" header-class="text-h6 text-weight-regular q-px-none" style="width: 100%;" header-style="font-size: 20px; font-family: 'Roboto'; font-weight: 400;">
+														<div class="row items-stretch" style="gap: 10px;">
+															<q-card v-for="reflection, key in group" square flat bordered class="my-card q-pa-sm reflections-item" :class="$q.dark.isActive ? 'bg-grey-7' : 'bg-grey-12'" >
+																<div class="row no-wrap items-center">
+																	<div class="row no-wrap q-mr-sm" style="width: 48px;height: 15px;">
+																		<template v-for="color in reflection.dimensions">
+																			<div class="col" :style="'height:100%; background-color: ' + color + ';'">
+																			</div>
+																		</template>
 																	</div>
-																</template>
-															</div>
-															<div class="text-subtitle2 text-weight-medium ellipsis">{{reflection.name}} </div>
-															<div class="text-subtitle2 text-weight-medium col-grow q-ml-xs"> | {{reflection.date}}</div>
+																	<div class="text-subtitle2 text-weight-medium ellipsis">{{reflection.name}} </div>
+																	<div class="text-subtitle2 text-weight-medium col-grow q-ml-xs"> | {{reflection.date}}</div>
+																</div>
+																<q-separator class="q-my-sm" color="grey-14" />
+																<div v-if="reflections_filter.session_slider_1">
+																	<b>{{session_sliders[0].label}}: </b>
+																	<q-icon v-if="reflection.session_slider_1 == '--'" name="circle" color="grey-13" />
+																	<q-icon v-else-if="reflection.session_slider_1 <= 33" name="circle" color="red" />
+																	<q-icon v-else-if="reflection.session_slider_1 > 33 && reflection.session_slider_1 <= 66" name="circle" color="yellow-14" />
+																	<q-icon v-else-if="reflection.session_slider_1 > 66" name="circle" color="green-14" />
+																	{{reflection.session_slider_1}}
+																</div>
+																<div v-if="reflections_filter.session_slider_2">
+																	<b>{{session_sliders[1].label}}: </b>
+																	<q-icon v-if="reflection.session_slider_2 == '--'" name="circle" color="grey-13" />
+																	<q-icon v-else-if="reflection.session_slider_2 <= 33" name="circle" color="red" />
+																	<q-icon v-else-if="reflection.session_slider_2 > 33 && reflection.session_slider_2 <= 66" name="circle" color="yellow-14" />
+																	<q-icon v-else-if="reflection.session_slider_2 > 66" name="circle" color="green-14" />
+																	{{reflection.session_slider_2}}
+																</div>
+																<div v-if="reflections_filter.session_slider_3">
+																	<b>{{session_sliders[2].label}}: </b>
+																	<q-icon v-if="reflection.session_slider_3 == '--'" name="circle" color="grey-13" />
+																	<q-icon v-else-if="reflection.session_slider_3 <= 33" name="circle" color="red" />
+																	<q-icon v-else-if="reflection.session_slider_3 > 33 && reflection.session_slider_3 <= 66" name="circle" color="yellow-14" />
+																	<q-icon v-else-if="reflection.session_slider_3 > 66" name="circle" color="green-14" />
+																	{{reflection.session_slider_3}}
+																</div>
+																<q-separator v-if="reflections_filter.session_slider_1 || reflections_filter.session_slider_2 || reflections_filter.session_slider_3" color="grey-13" class="q-my-sm" />
+																<div v-if="reflections_filter.challenges"><b>Challenges...</b> {{reflection.challenges}}</div>
+																<q-separator v-if="reflections_filter.challenges" color="grey-13" class="q-my-sm" />
+																<div v-if="reflections_filter.successes"><b>The successes were...</b> {{reflection.successes}}</div>
+																<q-separator v-if="reflections_filter.successes" color="grey-13" class="q-my-sm" />
+																<div v-if="reflections_filter.summary"><b>Summary...</b> {{reflection.summary}}</div>
+																<q-separator v-if="reflections_filter.summary" color="grey-13" class="q-my-sm" />
+																<div v-if="reflections_filter.feedback"><b>Feedback/improvements for Future [intended as notes to observer only?]:</b> {{reflection.feedback}}</div>
+															</q-card>
 														</div>
-														<q-separator class="q-my-sm" color="grey-14" />
-														<div v-if="reflections_filter.session_slider_1">
-															<b>{{session_sliders[0].label}}: </b>
-															<q-icon v-if="reflection.session_slider_1 == '--'" name="circle" color="grey-13" />
-															<q-icon v-else-if="reflection.session_slider_1 <= 33" name="circle" color="red" />
-															<q-icon v-else-if="reflection.session_slider_1 > 33 && reflection.session_slider_1 <= 66" name="circle" color="yellow-14" />
-															<q-icon v-else-if="reflection.session_slider_1 > 66" name="circle" color="green-14" />
-															{{reflection.session_slider_1}}
-														</div>
-														<div v-if="reflections_filter.session_slider_2">
-															<b>{{session_sliders[1].label}}: </b>
-															<q-icon v-if="reflection.session_slider_2 == '--'" name="circle" color="grey-13" />
-															<q-icon v-else-if="reflection.session_slider_2 <= 33" name="circle" color="red" />
-															<q-icon v-else-if="reflection.session_slider_2 > 33 && reflection.session_slider_2 <= 66" name="circle" color="yellow-14" />
-															<q-icon v-else-if="reflection.session_slider_2 > 66" name="circle" color="green-14" />
-															{{reflection.session_slider_2}}
-														</div>
-														<div v-if="reflections_filter.session_slider_3">
-															<b>{{session_sliders[2].label}}: </b>
-															<q-icon v-if="reflection.session_slider_3 == '--'" name="circle" color="grey-13" />
-															<q-icon v-else-if="reflection.session_slider_3 <= 33" name="circle" color="red" />
-															<q-icon v-else-if="reflection.session_slider_3 > 33 && reflection.session_slider_3 <= 66" name="circle" color="yellow-14" />
-															<q-icon v-else-if="reflection.session_slider_3 > 66" name="circle" color="green-14" />
-															{{reflection.session_slider_3}}
-														</div>
-														<q-separator v-if="reflections_filter.session_slider_1 || reflections_filter.session_slider_2 || reflections_filter.session_slider_3" color="grey-13" class="q-my-sm" />
-														<div v-if="reflections_filter.challenges"><b>Challenges...</b> {{reflection.challenges}}</div>
-														<q-separator v-if="reflections_filter.challenges" color="grey-13" class="q-my-sm" />
-														<div v-if="reflections_filter.successes"><b>The successes were...</b> {{reflection.successes}}</div>
-														<q-separator v-if="reflections_filter.successes" color="grey-13" class="q-my-sm" />
-														<div v-if="reflections_filter.summary"><b>Summary...</b> {{reflection.summary}}</div>
-														<q-separator v-if="reflections_filter.summary" color="grey-13" class="q-my-sm" />
-														<div v-if="reflections_filter.feedback"><b>Feedback/improvements for Future [intended as notes to observer only?]:</b> {{reflection.feedback}}</div>
-													</q-card>
+													</q-expansion-item>
 												</template>
 											</template>
 										</template>
 										<div v-else class="q-mt-md">Sorry, there is not enough data to group by this field</div>
 									</template>
-
 								</template>
 							</template>
 							<template v-else>
@@ -1691,19 +1782,8 @@ export default {
 											<q-icon name="search" />
 										</template>
 									</q-input>
-									<q-select v-model="observations_filter.select_1" @update:model-value="clearObservationSelect" :options="observations_filter.select_1_options" label="-Select-" clearable dense fill outlined square :class="$q.dark.isActive ? 'bg-black' : 'bg-white'" style="min-width: 150px" />
-									<q-select 
-										:disable="!observations_filter.select_1" 
-										v-model="observations_filter.select_2" 
-										@update:model-value="getData" 
-										:options="observations_filter.select_2_options[observations_filter.select_1]" 
-										:reset-on-options-change="true" 
-										label="-Select-" 
-										clearable dense fill outlined square 
-										:class="$q.dark.isActive ? 'bg-black' : 'bg-white'" 
-										style="min-width: 150px" 
-									/>
-
+									<q-select v-model="observations_filter.select_1" @update:model-value="clearObservationSelect" :options="observations_filter.select_1_options" :reset-on-options-change="true" label="-Select-" clearable dense fill outlined square :class="$q.dark.isActive ? 'bg-black' : 'bg-white'" style="min-width: 150px" />
+									<q-select :disable="!observations_filter.select_1" v-model="observations_filter.select_2" @update:model-value="getData" :options="observations_filter.select_2_options[observations_filter.select_1]" :reset-on-options-change="true" label="-Select-" clearable dense fill outlined square :class="$q.dark.isActive ? 'bg-black' : 'bg-white'" style="min-width: 150px" />
 									<q-checkbox size="md" v-model="observations_filter.images" @update:model-value="getData" unchecked-icon="photo_camera" checked-icon="camera_alt" color="green" />
 									<q-checkbox size="md" v-model="observations_filter.starred" @update:model-value="getData" unchecked-icon="star_border" checked-icon="star" indeterminate-icon="star_border" color="amber-13" />
 								</q-form>
@@ -1733,22 +1813,25 @@ export default {
 										</div>
 									</q-card>
 
+									<!-- list of observations -->
 									<template v-else>
+										<!-- ungrouped observations -->
 										<template v-if="currently_grouping == false" >
 
 											<template v-for="observation, i in observation_rows" >
+												<!-- tests observation images -->
 												<div v-if="1==2 && (observations_filter.images == false || (observations_filter.images == true && observation.image != null))">{{observation.session_name}} ?? {{observations_filter.images == true}} && {{observation.image != null}} == {{observations_filter.images == true && observation.image != null}} <q-img v-if="observation.image" :src="CONFIG.directus_url+'/assets/' + observation.image + '?access_token=' + user.userAccessToken" style="height: 150px; width: 100%;" class="q-mb-md" /></div>
 												<q-card 
 													v-if="
 													(
 														(
-															observations_filter.search == '' || observation.note.includes(observations_filter.search)
+															observations_filter.search == '' || (observation.note && observation.note.includes(observations_filter.search))
 														) && 
 														(
 															observations_filter.select_2 == null || 
 															(
 																(
-																	observations_filter.select_1 == 'dimensions' && observation.dimension == observations_filter.select_2
+																	observations_filter.select_1 == 'dimensions' && observation.dimension == observations_filter.select_2.label
 																) || (
 																	observations_filter.select_1 == 'indicators' && observation.indicator == observations_filter.select_2
 																) || (
@@ -1801,64 +1884,65 @@ export default {
 											<template v-if="number_of_groups > 0">
 												<template v-for="group, title in observation_rows_grouped">
 													<template v-if="group.length > 0" >
-
 														<q-separator style="width: 100%;" color="black" />
-														<div class="q-table__title" style="width: 100%;">{{title}}</div>
-
-														<template v-for="observation, i in group" >
-															<div v-if="1==2 && (observations_filter.images == false || (observations_filter.images == true && observation.image != null))">{{observation.session_name}} ?? {{observations_filter.images == true}} && {{observation.image != null}} == {{observations_filter.images == true && observation.image != null}} <q-img v-if="observation.image" :src="CONFIG.directus_url+'/assets/' + observation.image + '?access_token=' + user.userAccessToken" style="height: 150px; width: 100%;" class="q-mb-md" /></div>
-															<q-card 
-																v-if="
-																(
-																	(
-																		observations_filter.search == '' || observation.note.includes(observations_filter.search)
-																	) && 
-																	(
-																		observations_filter.select_2 == null || 
+														<q-expansion-item default-opened :label="title" header-class="text-h6 text-weight-medium q-px-none" style="width: 100%;" header-style="font-size: 20px; font-family: 'Roboto'; font-weight: 400;">
+															<div class="row items-stretch" style="gap: 10px;">
+																<template v-for="observation, i in group">
+																	<div v-if="1==2 && (observations_filter.images == false || (observations_filter.images == true && observation.image != null))">{{observation.session_name}} ?? {{observations_filter.images == true}} && {{observation.image != null}} == {{observations_filter.images == true && observation.image != null}} <q-img v-if="observation.image" :src="CONFIG.directus_url+'/assets/' + observation.image + '?access_token=' + user.userAccessToken" style="height: 150px; width: 100%;" class="q-mb-md" /></div>
+																	<q-card 
+																		v-if="
 																		(
 																			(
-																				observations_filter.select_1 == 'dimensions' && observation.dimension == observations_filter.select_2
-																			) || (
-																				observations_filter.select_1 == 'indicators' && observation.indicator == observations_filter.select_2
-																			) || (
-																				observations_filter.select_1 == 'attendee_code' && observation.attendee_code == observations_filter.select_2
+																				observations_filter.search == '' || (observation.note && observation.note.includes(observations_filter.search))
+																			) && 
+																			(
+																				observations_filter.select_2 == null || 
+																				(
+																					(
+																						observations_filter.select_1 == 'dimensions' && observation.dimension == observations_filter.select_2.label
+																					) || (
+																						observations_filter.select_1 == 'indicators' && observation.indicator == observations_filter.select_2
+																					) || (
+																						observations_filter.select_1 == 'attendee_code' && observation.attendee_code == observations_filter.select_2
+																					)
+																				)
+																			) && 
+																			(
+																				observations_filter.images == false || (observations_filter.images == true && observation.image != null)
+																			) && 
+																			(
+																				observations_filter.starred == false || (observations_filter.starred == true && observation.is_starred == true)
 																			)
 																		)
-																	) && 
-																	(
-																		observations_filter.images == false || (observations_filter.images == true && observation.image != null)
-																	) && 
-																	(
-																		observations_filter.starred == false || (observations_filter.starred == true && observation.is_starred == true)
-																	)
-																)
-																" 
-																square flat bordered 
-																class="my-card q-pa-sm q-pb-md observation-item" 
-																:class="$q.dark.isActive ? 'bg-grey-7' : 'bg-grey-3'" 
-															>
-																<div class="row no-wrap items-center" style="max-width: 100%;">
-																	<q-icon size="sm" :name="observation.is_starred ? 'star' : 'star_border'" color="amber-13" />
-																	<div class="col-shrink text-subtitle2 text-weight-medium ellipsis" >{{observation.session_name}}</div>
-																	<div class="text-subtitle2 text-weight-medium col-grow q-ml-xs"> | {{observation.date}}</div>
-																	<q-icon @click="expandObservation(observation.id)" name="open_in_full" class="q-ml-sm" style="cursor: pointer;" />
-																</div>
+																		" 
+																		square flat bordered 
+																		class="my-card q-pa-sm q-pb-md observation-item" 
+																		:class="$q.dark.isActive ? 'bg-grey-7' : 'bg-grey-3'" 
+																	>
+																		<div class="row no-wrap items-center" style="max-width: 100%;">
+																			<q-icon size="sm" :name="observation.is_starred ? 'star' : 'star_border'" color="amber-13" />
+																			<div class="col-shrink text-subtitle2 text-weight-medium ellipsis" >{{observation.session_name}}</div>
+																			<div class="text-subtitle2 text-weight-medium col-grow q-ml-xs"> | {{observation.date}}</div>
+																			<q-icon @click="expandObservation(observation.id)" name="open_in_full" class="q-ml-sm" style="cursor: pointer;" />
+																		</div>
 
-																<q-img v-if="observation.image" :src="CONFIG.directus_url+'/assets/' + observation.image + '?access_token=' + user.userAccessToken" style="height: 150px; width: 100%;" class="q-mb-md" />
-																
-																<q-separator v-else color="grey-13" class="q-mb-md" />
+																		<q-img v-if="observation.image" :src="CONFIG.directus_url+'/assets/' + observation.image + '?access_token=' + user.userAccessToken" style="height: 150px; width: 100%;" class="q-mb-md" />
+																		
+																		<q-separator v-else color="grey-13" class="q-mb-md" />
 
-																<div v-if="observation.time" class="text-body2 text-weight-bold q-mb-sm" style="letter-spacing:-.5px;">{{observation.time}}</div>
-																<div v-if="observation.note" class="text-caption q-mb-sm ellipsis-2-lines" style="letter-spacing: 0px; line-height: 15px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;">Note: {{observation.note}}</div>
-																<div v-if="observation.dimension" class="text-caption q-px-sm q-py-xs q-mb-sm" :style="'letter-spacing: 0px; line-height: 15px; width: fit-content; border-radius: 50px; color: white; background-color: ' + observation.dimension_color + ';'">{{observation.dimension}}</div>
-																<div v-if="observation.indicator" class="text-caption ellipsis-2-lines" style="letter-spacing: 0px; line-height: 15px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;">Indicator: {{observation.indicator}}</div>
-																
-																<div v-if="observation.attendee_code" class="q-mt-sm">
-																	<q-icon name="person" />
-																	{{observation.attendee_code}}
-																</div>
-															</q-card>
-														</template>
+																		<div v-if="observation.time" class="text-body2 text-weight-bold q-mb-sm" style="letter-spacing:-.5px;">{{observation.time}}</div>
+																		<div v-if="observation.note" class="text-caption q-mb-sm ellipsis-2-lines" style="letter-spacing: 0px; line-height: 15px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;">Note: {{observation.note}}</div>
+																		<div v-if="observation.dimension" class="text-caption q-px-sm q-py-xs q-mb-sm" :style="'letter-spacing: 0px; line-height: 15px; width: fit-content; border-radius: 50px; color: white; background-color: ' + observation.dimension_color + ';'">{{observation.dimension}}</div>
+																		<div v-if="observation.indicator" class="text-caption ellipsis-2-lines" style="letter-spacing: 0px; line-height: 15px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;">Indicator: {{observation.indicator}}</div>
+																		
+																		<div v-if="observation.attendee_code" class="q-mt-sm">
+																			<q-icon name="person" />
+																			{{observation.attendee_code}}
+																		</div>
+																	</q-card>
+																</template>
+															</div>
+														</q-expansion-item>
 													</template>
 												</template>
 											</template>
@@ -1872,7 +1956,6 @@ export default {
 					</div>
 				</div>
 			</div>
-
 		</q-expansion-item>
 
 		<!-- footer -->
