@@ -576,7 +576,14 @@ export default {
 
 					
 					// populate options for observations view dropdowns
-					let found = all_dimensions.some(el => el.value === answers[session_id].Observations[observation_id].dimension_id.id); // check if id is already in all_dimensions
+					let found;
+					if (answers[session_id].Observations[observation_id].dimension_id) { // if there's a dimension
+						// found is true if the dimension id is already in all_dimensions
+						found = all_dimensions.some(el => el.value === answers[session_id].Observations[observation_id].dimension_id.id);
+					} else { // if there's not a dimension
+						// found is just false
+						found = false;
+					}
 					if (
 						answers[session_id].Observations[observation_id].dimension_id && 
 						answers[session_id].Observations[observation_id].dimension_id.name && 

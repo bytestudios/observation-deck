@@ -31,9 +31,9 @@ export const data = Vue.reactive({
 			if (filter_form.framework) filter_string += 'framework_id: {id: {_eq: ' + filter_form.framework + '}}';
 	
 			// let new_query = 'query SessionsAndObservations {Sessions(filter:{' + filter_string + '}) {id name date framework_id {id name} location_id {id name} partner_id {id name} institution_id {id Name} complete attendance_count primary_audience image {id} summary challenges successes feedback slider_1 slider_2 slider_3 status user_id {id first_name last_name} Observations {id note date_created image {id} dimension_id {id name color} indicator_id {id name} attendee_code is_starred}}}';
-			new_query = 'query SessionsAndObservations {Sessions(filter:{' + filter_string + '}) {id name date framework_id {id name} location_id {id name} partner_id {id name} institution_id {id Name} complete attendance_count primary_audience image {id} summary challenges successes feedback slider_1 slider_2 slider_3 status user_id {id first_name last_name} Observations {id note date_created image {id} dimension_id {id name color} indicator_id {id name} attendee_code is_starred}}}';
+			new_query = 'query SessionsAndObservations {Sessions(limit:-1, filter:{' + filter_string + '}) {id name date framework_id {id name} location_id {id name} partner_id {id name} institution_id {id Name} complete attendance_count primary_audience image {id} summary challenges successes feedback slider_1 slider_2 slider_3 status user_id {id first_name last_name} Observations {id note date_created image {id} dimension_id {id name color} indicator_id {id name} attendee_code is_starred}}}';
 		} else { // for unfiltered sessions (for date dropdown/selection)
-			new_query = 'query SessionsAndObservations {Sessions{id name date Observations {id note date_created}}}';
+			new_query = 'query SessionsAndObservations {Sessions(limit:-1) {id name date Observations {id note date_created}}}';
 		}
 		
 		await fetch(CONFIG.directus_url+'/graphql', {
@@ -47,7 +47,6 @@ export const data = Vue.reactive({
 		})
 		.then(response => response.json())
 		.then(response => {
-			// console.log('----response:', response);
 			response.data['Sessions'].forEach(element => {
 				// console.log('>>', element);
 				// if (element && reduce_to.includes(Number(element.id))) {
@@ -60,7 +59,6 @@ export const data = Vue.reactive({
 			});
 		})
 		.catch(err => console.error(err));
-		// console.log('----whats returned through the filtering:', sessions);
 		return sessions;
 	},
 	async saveSession(which_id, s_form) {

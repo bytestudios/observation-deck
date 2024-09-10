@@ -94,7 +94,7 @@ export default {
 				await user.fetchCollection("users").then((fc_results) => {
 					user.users = {};
 					Object.keys(fc_results).forEach(function(key) {
-						console.log('LOOKY HERE', key, fc_results[key]);
+						// console.log('LOOKY HERE', key, fc_results[key]);
 						user.users[fc_results[key].id] = fc_results[key];
 					});
 					window.localStorage.setItem("users", JSON.stringify({ data: user.users }));
