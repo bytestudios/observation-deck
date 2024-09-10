@@ -137,7 +137,7 @@ export default {
 				}
 			});
 			// fetch current sessions and save them to LS
-			await user.fetchCollection("items/Sessions",'?filter[status][_eq]=published&filter[user_id][_eq]=' + user.userID).then((fc_results) => {
+			await user.fetchCollection("items/Sessions",'?limit=-1&filter[status][_eq]=published&filter[user_id][_eq]=' + user.userID).then((fc_results) => {
 				user.sessions = fc_results;
 				window.localStorage.setItem("sessions", JSON.stringify({ data: fc_results }));
 			});
@@ -162,7 +162,7 @@ export default {
 				}
 			});
 			// so refresh sessions
-			await user.fetchCollection("items/Sessions", '?filter[status][_eq]=published&filter[user_id][_eq]=' + user.userID).then((fc_results) => {
+			await user.fetchCollection("items/Sessions", '?limit=1000&filter[status][_eq]=published&filter[user_id][_eq]=' + user.userID).then((fc_results) => {
 				user.sessions = fc_results;
 				window.localStorage.setItem("sessions", JSON.stringify({ data: fc_results }));
 			});
@@ -209,7 +209,7 @@ export default {
 			});
 
 			// so refresh sessions
-			await user.fetchCollection("items/Sessions", '?filter[status][_eq]=published&filter[user_id][_eq]=' + user.userID).then((fc_results) => {
+			await user.fetchCollection("items/Sessions", '?limit=1000&filter[status][_eq]=published&filter[user_id][_eq]=' + user.userID).then((fc_results) => {
 				user.sessions = fc_results;
 				window.localStorage.setItem("sessions", JSON.stringify({ data: fc_results }));
 			});
