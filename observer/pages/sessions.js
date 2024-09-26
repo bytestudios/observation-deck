@@ -234,7 +234,7 @@ export default {
 		</q-table>
 	</div>
 	<div class="row justify-center fixed-bottom q-mb-sm">
-		<q-btn color="primary" tag="a" href="/session">New Session</q-btn>
+		<q-btn color="primary" tag="a" href="../session">New Session</q-btn>
 	</div>
 	`,
   };
