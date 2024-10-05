@@ -34,7 +34,7 @@ export default {
 
 		<q-scroll-area style="height: 240px;" class="q-ml-md">
 			<div class="row no-wrap q-mt-sm">
-				<div v-for="v, k in incomplete_rows" @click="go_to_page('/session/'+v.id)" style="width: 160px;cursor:pointer;" class="q-mr-md">
+				<div v-for="v, k in incomplete_rows.reverse()" @click="go_to_page('/session/'+v.id)" style="width: 160px;cursor:pointer;" class="q-mr-md">
 					<q-img v-if="v.image" :src="CONFIG.directus_url+'/assets/'+v.image+'?access_token='+user.userAccessToken+'&width=160&height=160&fit=cover&quality=60'">
 						<div class="absolute-bottom text-subtitle2 text-center" style="line-height: 13px;">{{v.name}}</div>
 					</q-img>
@@ -50,13 +50,18 @@ export default {
 
 		<q-scroll-area style="height: 260px;" class="q-pl-md">
 			<div class="row no-wrap q-mt-sm">
-				<div v-for="v, k in complete_rows" @click="go_to_page('/session/'+v.id)" style="width: 160px;cursor:pointer;" class="q-mr-md">
+				<template v-for="v, k in complete_rows.reverse()">
+				<div v-if="k < 10" @click="go_to_page('/session/'+v.id)" style="width: 160px;cursor:pointer;" class="q-mr-md">
 					<q-img v-if="v.image" :src="CONFIG.directus_url+'/assets/'+v.image+'?access_token='+user.userAccessToken+'&width=160&height=160&fit=cover&quality=60'">
 						<div class="absolute-bottom text-subtitle2 text-center" style="line-height: 13px;">{{v.name}}</div>
 					</q-img>
 					<div v-else class="text-subtitle2 bg-accent text-center text-white q-pa-md" style="height: 160px;">{{v.name}}</div>
 					<div class="text-subtitle text-no-wrap ellipsis q-mt-sm">{{ quasarDate.formatDate(v.date, 'MMM D') }} {{ quasarDate.formatDate(v.date, ' - h:mma') }}</div>
 					<div v-if="v.location_id" class="text-subtitle2 text-no-wrap ellipsis">{{user.locations.data.find(obj => {return obj.id === v.location_id})['name']}}</div>
+				</div>
+				</template>
+				<div @click="go_to_page('/sessions/')" style="width: 160px;cursor:pointer;" class="q-mr-md">
+					<div class="text-subtitle2 bg-primary text-center text-white q-pa-md" style="height: 160px;padding-top: 40px;">View<br />All<br />Sessions</div>
 				</div>
 			</div>
 		</q-scroll-area>
