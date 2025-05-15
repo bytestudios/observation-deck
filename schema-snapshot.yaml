@@ -3479,7 +3479,7 @@ fields:
       interface: select-dropdown-m2o
       note: null
       options:
-        template: '{{nane}}'
+        template: '{{name}}'
       readonly: false
       required: false
       sort: 5
