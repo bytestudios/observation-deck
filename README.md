@@ -121,10 +121,12 @@ server {
         try_files $uri $uri/ =404;
     }
     location /reporter {
-        try_files $uri $uri/ =404;
+        # try_files $uri $uri/ =404; (didn't work, suggestion from @lrao2022)
+        try_files $uri $uri/ /reporter/index.html;
     }
     location /observer {
-        try_files $uri $uri/ =404;
+        # try_files $uri $uri/ =404; (didn't work, suggestion from @lrao2022)
+        try_files $uri $uri/ /observer/index.html;
     }
     location /config.js {
         try_files $uri $uri/ =404;
