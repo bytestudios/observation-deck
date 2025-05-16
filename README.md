@@ -240,7 +240,8 @@ NOTE that permissions are not set up -- the method is to give Observers the righ
 
 Starter data is a data dump and can be imported into MySQL.
 
-_Base data file coming soon._
+Using this file, import into your MySQL:
+`sql_observation_deck_directus.sql`
 
 In the Directus database via MySQL, remove all the tables, and then Import base Directus SQL data (called base_data.sql). Then migrate that data from the project directory:
 ```
